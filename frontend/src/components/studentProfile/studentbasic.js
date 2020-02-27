@@ -142,6 +142,7 @@ import {createProfile} from '../../actions/profileActions';
                  />
                  <input
                    type="submit"
+                   value="submit"
                    className="btn btn-info btn-block mt-4"
                  />
                </form>

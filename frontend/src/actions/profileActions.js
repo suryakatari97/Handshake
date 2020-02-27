@@ -4,7 +4,7 @@ import {GET_PROFILE, PROFILE_LOADING, GET_ERRORS} from './types';
 
 
 export const getCurrentProfile = () => dispatch => {
-    dispatchEvent(setProfileLoading());
+    dispatch(setProfileLoading());
     axios.get('/student/studentdetails')
     .then(res => 
         dispatch({

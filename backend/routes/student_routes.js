@@ -4,6 +4,8 @@ const router = express.Router();
 
 const student = require('../controllers/studentProfile');
 const validateBasicInput = require('../validation/studentbasic');
+const validateInput = require('../validation/studentExperience');
+const validateEduInput = require('../validation/studentEducation');
 
 router.get('/studentdetails', async (req, res) => {
     console.log("inside profile get request");
@@ -80,6 +82,13 @@ router.get('/studentExperience', async (req, res) => {
 });
 
 router.post("/studentExperience", async (req, res) => {
+
+    const {errors, isValid} = validateInput(req.body);
+
+    if(!isValid) {
+        return res.status(400).json(errors)
+    }
+
     let resObj = {};
     console.log("in student experience");
     if (!req.body.id || !req.body.company_name || !req.body.start_date) {
@@ -95,7 +104,8 @@ router.post("/studentExperience", async (req, res) => {
         "title": req.body.title,
         "location": req.body.location,
         "start_date": req.body.start_date,
-        "end_date": req.body.work_desc
+        "end_date": req.body.end_date,
+        "work_desc": req.body.work_desc
     }
     try {
         console.log("student experience details");
@@ -132,6 +142,13 @@ router.get("/studentEducation", async (req, res) => {
 });
 
 router.post("/studentEducation", async (req, res) => {
+
+    const {errors, isValid} = validateEduInput(req.body);
+
+    if(!isValid) {
+        return res.status(400).json(errors)
+    }
+
     let resObj ={};
     console.log("in student education");
     if(!req.body.id || !req.body.degree || !req.body.major) {

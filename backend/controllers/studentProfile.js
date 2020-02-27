@@ -11,7 +11,7 @@ var getstudentdetails = async studentId => {
       var user = await profileExists(studentId, table, conn);
       await conn.query("START TRANSACTION");
       if (user) {
-        await conn.query("select * from ?? where student_id = ?", [
+      var result = await conn.query("select * from ?? where student_id = ?", [
           table,
           studentId
         ]);
@@ -20,6 +20,8 @@ var getstudentdetails = async studentId => {
       status = true;
       msg = "student details fetched";
       console.log(msg);
+      console.log(result);
+      
     }
   } catch (e) {
     console.log(e);
@@ -113,6 +115,7 @@ var getstudentExperience = async studentId => {
     };
   }
 };
+
 var studentExperience = async studentExp => {
   let conn;
   let msg;
@@ -198,6 +201,7 @@ var getstudentEducation = async studentId => {
     };
   }
 };
+
 var studentEducation = async studentEdu => {
   let conn;
   let msg;
