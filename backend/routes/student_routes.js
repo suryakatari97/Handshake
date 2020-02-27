@@ -23,6 +23,7 @@ router.get('/studentdetails', async (req, res) => {
 });
 
 router.post("/studentdetails", async (req, res) => {
+    console.log("in post student details");
     const { errors, isValid } = validateBasicInput(req.body);
 
     if(!isValid) {

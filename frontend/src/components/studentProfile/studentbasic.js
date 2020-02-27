@@ -10,7 +10,7 @@ import {createProfile} from '../../actions/profileActions';
    constructor(props) {
      super(props);
      this.state = {
-       fname: "",
+       fname: "",//same
        lname: "",
        dob: "",
        city: "",
@@ -35,7 +35,7 @@ import {createProfile} from '../../actions/profileActions';
    onSubmit(e) {
      e.preventDefault();
         const basicData = {
-          fname: this.state.fname,
+          fname: this.state.fname, //backendvariable:this.state.frontend state variable
           lname: this.state.lname,
           dob: this.state.dob,
           city: this.state.city,
@@ -51,11 +51,15 @@ import {createProfile} from '../../actions/profileActions';
      
    }
    onChange(e) {
-     this.setState({ [e.target.name]: e.target.value });
+     this.setState({ 
+       [e.target.name]: e.target.value 
+      });
    }
 
    render() {
      const { errors } = this.state;
+     console.log(errors);
+     
      return (
        <div className="studentbasic">
          <div className="container">
@@ -64,13 +68,13 @@ import {createProfile} from '../../actions/profileActions';
                <h1 className="display-4 text-center">
                  Enter your basic details
                </h1>
-               <form onSubmit={this.onSubmit}>
+               <form noValidate onSubmit={this.onSubmit}>
                  <TextFieldGroup
-                   placeholder="fname"
-                   name="fname"
-                   value={this.state.fname}
+                   placeholder="firstname"
+                   name="fname"//same
+                   value={this.state.fname}//same
                    onChange={this.onChange}
-                   error={errors.fname}
+                   error={errors.fname}//backend fname
                  />
 
                  <TextFieldGroup
@@ -138,7 +142,6 @@ import {createProfile} from '../../actions/profileActions';
                  />
                  <input
                    type="submit"
-                   value="Submit"
                    className="btn btn-info btn-block mt-4"
                  />
                </form>
@@ -149,6 +152,7 @@ import {createProfile} from '../../actions/profileActions';
      );
    }
  }
+
 studentbasic.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -157,7 +161,7 @@ studentbasic.propTypes = {
 //mapping state to props
 const mapStateToProps = state => ({
 profile: state.profile,
-errors: state.erros
+errors: state.errors
 });
 
 export default connect(mapStateToProps, { createProfile })(withRouter(studentbasic));
