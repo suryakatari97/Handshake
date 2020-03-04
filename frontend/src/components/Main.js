@@ -11,7 +11,7 @@ import Landing from './layout/Landing';
 import EditStudentProfileBasic from './studentProfile/EditStudentProfileBasic';
 import eventPost from './eventPost/eventPost';
 import viewevents from './studentProfile/studentviewevents';
-
+import viewStudentProfiles from './studentProfile/viewStudentProfiles';
  class Main extends Component {
     render() {
         return (
@@ -20,6 +20,11 @@ import viewevents from './studentProfile/studentviewevents';
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/studentviewevents" component={viewevents} />
+            <Route
+              exact
+              path="/viewStudentProfiles"
+              component={viewStudentProfiles}
+            />
             <Route
               exact
               path="/studentDashboard"

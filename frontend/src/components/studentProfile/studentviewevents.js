@@ -39,7 +39,7 @@ class studentviewevents extends Component {
       if (
         viewevent.company_name
           .toUpperCase()
-          .includes(this.state.searchString.toUpperCase())
+          .includes(this.state.searchString.toUpperCase()) 
       ) {
         return (
           <tr key={viewevent.event_id}>

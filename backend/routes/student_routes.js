@@ -3,7 +3,10 @@ const express = require("express");
 const router = express.Router();
 
 const student = require("../controllers/studentProfile");
-var { getEvents } = require("../controllers/studentProfile");
+var {
+  getEvents,
+  getStudentProfiles
+} = require("../controllers/studentProfile");
 
 //validations
 const validateBasicInput = require("../validation/studentbasic");
@@ -259,5 +262,6 @@ router.post("/studentEducation", async (req, res) => {
 });
 
 router.get("/viewevents", getEvents);
+router.get("/viewStudentProfiles", getStudentProfiles)
 
 module.exports = router;
