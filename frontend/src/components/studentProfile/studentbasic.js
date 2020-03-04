@@ -34,6 +34,9 @@ import {createProfile} from '../../actions/profileActions';
    }
    onSubmit(e) {
      e.preventDefault();
+     let id = this.props.auth.user.id;
+     console.log(this.props.auth);
+     
         const basicData = {
           fname: this.state.fname, //backendvariable:this.state.frontend state variable
           lname: this.state.lname,
@@ -44,7 +47,8 @@ import {createProfile} from '../../actions/profileActions';
           careerObj: this.state.careerObj,
           email: this.state.email,
           phone_num: this.state.phone_num,
-          skill_set: this.state.skill_set
+          skill_set: this.state.skill_set,
+          student_id:id
         };
         //we call redux action using props
         this.props.createProfile(basicData, this.props.history);
@@ -78,14 +82,14 @@ import {createProfile} from '../../actions/profileActions';
                  />
 
                  <TextFieldGroup
-                   placeholder="lname"
+                   placeholder="lastname"
                    name="lname"
                    value={this.state.lname}
                    onChange={this.onChange}
                    error={errors.lname}
                  />
                  <TextFieldGroup
-                   placeholder="dob"
+                   placeholder="Date-of-Birth(YYYY-MM-DD)"
                    name="dob"
                    value={this.state.dob}
                    onChange={this.onChange}
@@ -156,13 +160,15 @@ import {createProfile} from '../../actions/profileActions';
 
 studentbasic.propTypes = {
   profile: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 //mapping state to props
 const mapStateToProps = state => ({
-profile: state.profile,
-errors: state.errors
+  profile: state.profile,
+  errors: state.errors,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { createProfile })(withRouter(studentbasic));

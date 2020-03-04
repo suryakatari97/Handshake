@@ -8,11 +8,14 @@ var dbConnection = require('./controllers/dbconnection')
 
 const userRouter = require('./routes/user_routes');
 const studentRouter = require('./routes/student_routes');
+const companyRouter = require('./routes/company_routes');
 
 testDBConection = async () => {
     let con = await dbConnection();
     if (con) {
         console.log("Connected to Database");
+    } else {
+        console.log("Not Connected");
     }
 }
 testDBConection();
@@ -26,6 +29,7 @@ app.use(bodyParser.json());
 
 app.use('/user', userRouter);
 app.use('/student', studentRouter);
+app.use('/company', companyRouter);
 
 
 // add database to req object.

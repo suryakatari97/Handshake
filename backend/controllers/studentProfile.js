@@ -1,5 +1,39 @@
 const dbConnection = require("./dbconnection");
 
+let updatestudentProfileImage = async (studentId, student_profileImageName) => {
+  let conn;
+  let insertId = -1;
+  let message = "";
+  let status = false;
+  try {
+    conn = await dbConnection();
+    if (conn) {
+      await conn.query("START TRANSACTION");
+      var student_details = await conn.query(
+        "UPDATE student_details SET student_profileImage = ? where student_id = ? ",
+        [student_profileImageName, studentId]
+      );
+      await conn.query("COMMIT");
+      console.log(student_details[0]);
+      message = { student_profileImage: student_profileImageName };
+      status = true;
+    }
+  } catch (e) {
+    console.log(e);
+    message = "Error at server side! Please login again to continue!!";
+    status = false;
+  } finally {
+    if (conn) {
+      await conn.release();
+      await conn.destroy();
+    }
+    return {
+      status: status,
+      message: message
+    };
+  }
+};
+
 var getstudentdetails = async studentId => {
   let conn;
   let msg;
@@ -8,10 +42,10 @@ var getstudentdetails = async studentId => {
   try {
     conn = await dbConnection();
     if (conn) {
-      var user = await profileExists(studentId, table, conn);
       await conn.query("START TRANSACTION");
+      var user=true;
       if (user) {
-      var result = await conn.query("select * from ?? where student_id = ?", [
+        var result = await conn.query("select * from ?? where student_id = ?", [
           table,
           studentId
         ]);
@@ -21,7 +55,6 @@ var getstudentdetails = async studentId => {
       msg = "student details fetched";
       console.log(msg);
       console.log(result);
-      
     }
   } catch (e) {
     console.log(e);
@@ -34,7 +67,8 @@ var getstudentdetails = async studentId => {
     }
     return {
       status: status,
-      message: msg
+      message: msg,
+      result: result
     };
   }
 };
@@ -197,7 +231,8 @@ var getstudentEducation = async studentId => {
     }
     return {
       status: status,
-      message: msg
+      message: msg,
+      result:result
     };
   }
 };
@@ -251,6 +286,25 @@ var studentEducation = async studentEdu => {
       message: msg
     };
   }
+};
+
+var getEvents = async (req, res, next) => {
+  let conn;
+  let msg;
+  let status = false;
+  let table = "event_post";
+  conn = await dbConnection();
+  await conn.query("START TRANSACTION");
+  //await conn.query("SELECT * FROM ??",[table],(err, rowsOfTable) => {
+    await conn.query("select e.event_id,e.event_name,e.location,e.event_description,e.eligibility,e.timestamp,c.company_name from event_post AS e,company_register AS c where e.company_id = c.company_id",[],(err, rowsOfTable) => {
+    if(err) {
+      console.log(err);
+      res.status(500).json({ responseMessage: "Database not responding" });
+    } else {
+      console.log(rowsOfTable);
+      res.status(200).json({events: rowsOfTable});
+    }
+  });
 };
 
 let profileExists = async (id, table, conn) => {
@@ -310,5 +364,7 @@ module.exports = {
   studentEducation,
   getstudentdetails,
   getstudentExperience,
-  getstudentEducation
+  getstudentEducation,
+  updatestudentProfileImage,
+  getEvents
 };

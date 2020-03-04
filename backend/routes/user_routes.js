@@ -4,6 +4,7 @@ const router = express.Router();
 const sha1 = require("sha1");
 
 const validateRegisterInput = require("../validation/register");
+const validateLoginInput = require("../validation/login");
 
 const signup = require("../controllers/studentlogin");
 
@@ -71,6 +72,13 @@ router.post("/signUpCompany", async (req, res) => {
 });
 
 router.post("/signIn", async function(req, res) {
+
+  const { errors, isValid } = validateLoginInput(req.body);
+  console.log(isValid);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   console.log("in signin route..");
   console.log(req.body);
   let { email, password, userType } = req.body;
@@ -86,40 +94,13 @@ router.post("/signIn", async function(req, res) {
     };
     var responseObj = await signup.signIn(userData);
     status = responseObj.status;
-    let user_id = userType === "student" ? "student_id" : "company_id";
-    // let user_name = userType === "owner" ? "owner_name" : "buyer_name";
-    //let name = responseObj.name;
-
     console.log(responseObj);
-    if (status) {
-      res.cookie("user_type", userType, {
-        maxAge: 900000,
-        httpOnly: false,
-        path: "/"
-      });
-      res.cookie(user_id, responseObj[user_id], {
-        maxAge: 900000,
-        httpOnly: false,
-        path: "/"
-      });
-      res.cookie("name", responseObj.name, {
-        maxAge: 900000,
-        httpOnly: false,
-        path: "/"
-      });
-      req.session.user = email;
-    }
-    /* res.writeHead(200,{
-             "status" : 200,
-             'Content-Type' : 'text/plain'
-         })*/
     console.log("responseObj....");
     console.log(responseObj);
   } catch (e) {
     console.log(e);
     status = false;
   } finally {
-    // res.end(JSON.stringify({...responseObj,status:status}));
     res.status(200).json({
       ...responseObj
     });

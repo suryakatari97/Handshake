@@ -3,6 +3,10 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import StudentNavbar from "./StudentNavbar";
+import { addEducationRecord } from "../../actions/profileActions";
+import { Redirect } from "react-router";
+import axios from "axios";
 
 
  class studentEducation extends Component {
@@ -15,13 +19,22 @@ import { connect } from "react-redux";
             major: "",
             year_passing: "",
             cgpa:"",
+            success:false,
             errors: {}
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    //componentwillreceiveprops
+    componentDidMount(){
+        console.log(this.auth);
+        
+        let id = this.props.auth.user.id;
+        axios("/student/studentEducation", {
+          method: "get",
+          params: { "id": id }
+        });
+    }
 
 
     onChange(e) {
@@ -32,6 +45,7 @@ import { connect } from "react-redux";
 
     onSubmit(e) {
         e.preventDefault();
+        let id = this.props.auth.user.id;
         const eduData = {
 
             clgName:this.state.cname,
@@ -39,13 +53,24 @@ import { connect } from "react-redux";
             location:this.state.location,
             major: this.state.major,
             passingYear:this.state.year_passing,
-            cgpa:this.state.cgpa
-        }
+            cgpa:this.state.cgpa,
+            id: id
+        };
+        //this.props.addEducationRecord(eduData, this.props.history);
+        axios
+     .post("/student/studentEducation", eduData)
+     .then(res => console.log(res))
+     this.setState({ success: true });
     }
     render() {
         const {errors} = this.state;
+        let redirVar = null
+        if(this.state.success === true){
+            redirVar = <Redirect to="/viewprofile"/>
+        }
         return (
             <div className="studentExp">
+                {redirVar}
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
@@ -101,7 +126,6 @@ import { connect } from "react-redux";
                                     onChange={this.onChange}
                                     error={errors.cgpa}//backend fname
                                 />
-
                                 <input
                                     type="submit"
                                     value="submit"
@@ -116,4 +140,19 @@ import { connect } from "react-redux";
     }
 }
 
-export default studentEducation;
+studentEducation.propTypes = {
+  auth: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  profile: state.profile,
+  errors: state.errors
+});
+
+
+export default connect(mapStateToProps)(
+  withRouter(studentEducation)
+);

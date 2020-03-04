@@ -9,7 +9,7 @@ module.exports = function validateRegisterInput (data)  {
     data.lname =!isEmpty(data.lname) ? data.lname : '';
     data.email =!isEmpty(data.email) ? data.email : '';
     data.password =!isEmpty(data.password) ? data.password : '';
-    data.cname =!isEmpty(data.college) ? data.cname : '';
+    data.cname =!isEmpty(data.cname) ? data.cname : '';
     
     if(!Validator.isLength(data.fname,{min:2, max:30})) {
         errors.fname ='Name must be between 2 and 30 characters';
@@ -18,7 +18,7 @@ module.exports = function validateRegisterInput (data)  {
     if(Validator.isEmpty(data.fname)) {
         errors.fname = 'Name field is required';
     }
-
+    
     if(Validator.isEmpty(data.lname)) {
         errors.lname = 'Name field is required';
     }

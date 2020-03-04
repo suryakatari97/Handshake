@@ -1,4 +1,6 @@
 //import {TEST_DISPATCH} from '../actions/types'
+import { SET_CURRENT_USER } from "../actions/types";
+import { isFieldEmpty } from "../components/auth/HelperApis";
 
 const initialState = {
     isAuthenticated: false,
@@ -12,7 +14,14 @@ export default function(state = initialState, action) {
         //         ...state,
         //         user : action.payload
         //     }
-        
+        case SET_CURRENT_USER:
+            console.log(action.payload);
+            
+            return {
+                ...state,
+                isAuthenticated: !isFieldEmpty(action.payload),
+                user: action.payload
+            }
         default:
             return state;
 
