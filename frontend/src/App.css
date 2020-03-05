@@ -13,6 +13,21 @@
   }
 }
 
+.modal-popup{
+    max-width: 50%;
+    overflow: hidden;
+    height: 80%;
+}
+
+#eventtext{
+  margin:0px;
+  padding: 0px;
+}
+
+#eventscard{
+  margin-bottom: 25px;
+}
+
 #viewevents {
   float: right;
   margin-left: 600px;
