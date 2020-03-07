@@ -3,10 +3,9 @@ const express = require("express");
 const router = express.Router();
 
 const student = require("../controllers/studentProfile");
-var {
-  getEvents,
-  getStudentProfiles
-} = require("../controllers/studentProfile");
+var {getStudentProfiles} = require("../controllers/studentProfile");
+
+
 
 //validations
 const validateBasicInput = require("../validation/studentbasic");
@@ -110,6 +109,7 @@ router.get("/studentdetails", async (req, res) => {
     });
   }
 });
+
 
 router.post("/studentdetails", async (req, res) => {
   console.log("in post student details");
@@ -261,7 +261,8 @@ router.post("/studentEducation", async (req, res) => {
   }
 });
 
-router.get("/viewevents", getEvents);
-router.get("/viewStudentProfiles", getStudentProfiles)
+
+router.get("/viewStudentProfiles", getStudentProfiles);
+
 
 module.exports = router;

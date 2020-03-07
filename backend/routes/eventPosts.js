@@ -3,6 +3,8 @@ const router = express.Router();
 
 //Load jobPosts Model
 const eventPost = require("../controllers/company/eventPosts");
+const StudentEvents = require("../controllers/events/studentEvents");
+var { getEvents } = require("../controllers/events/studentEvents");
 
 router.get("/getEventDetails", async function(req, res) {
   var responseObj = {};
@@ -55,3 +57,56 @@ router.post("/addEventPost", async function(req, res) {
     });
   }
 });
+
+router.get("/getStudentEvents", async (req, res) => {
+  var resObj = {};
+  try {
+    let user_id = req.query.user_id;
+    resObj = await StudentEvents.getStudentEvents(user_id);
+    console.log(resObj);
+  } catch (e) {
+    console.log(e);
+    resObj.status = false;
+  } finally {
+    res.status(200).json({
+      ...resObj
+    });
+  }
+});
+
+router.post("/eventregister", async (req, res) => {
+  console.log("in event register Route");
+  let { event_id, user_id, Registration } = req.body;
+  var resObj = {};
+  try {
+    let eventregister = {
+      student_id: user_id,
+      Registration: Registration,
+      event_id: event_id
+    };
+    resObj = await StudentEvents.eventRegister(eventregister);
+  } catch (error) {
+    console.log(error);
+    resObj.status = false;
+  } finally {
+    res.status(200).json({
+      ...resObj
+    });
+  }
+});
+router.get("/viewevents", async (req, res) => {
+  var resObj = {};
+  try {
+    let user_id = req.query.user_id;
+    resObj = await getEvents(user_id);
+    console.log(resObj);
+  } catch (error) {
+    console.log(error);
+    resObj.status = false;
+  } finally {
+    res.status(200).json({
+      ...resObj
+    });
+  }
+});
+module.exports = router;

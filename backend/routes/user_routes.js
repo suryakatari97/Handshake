@@ -10,6 +10,8 @@ const signup = require("../controllers/studentlogin");
 
 router.get("/signUp", (req, res) => res.json({ msg: "signup" }));
 
+
+
 router.post("/signUpStudent", async function(req, res) {
   console.log("enter signup backend");
 

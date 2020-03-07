@@ -1,23 +1,22 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import StudentNavbar from "./StudentNavbar";
 import axios from "axios";
 import "../../App.css";
 import vieweventModal from "./vieweventModal";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { getID } from "../auth/HelperApis";
-import swal from "sweetalert";
 
-class studentviewevents extends Component {
+class studentRegisteredevents extends Component {
   constructor() {
     super();
     this.state = {
-      events: [],
+      studentevents: [],
       searchString: "",
       displayAck: false,
       success: false,
       modal: false
     };
+    // this.showModal = this.showModal.bind(this);
     this.searchChangeHandler = this.searchChangeHandler.bind(this);
   }
   searchChangeHandler(e) {
@@ -29,61 +28,37 @@ class studentviewevents extends Component {
       modal: !this.state.modal
     });
   };
-  async componentDidMount() {
-    const user_id = getID();
-    axios("/events/viewevents", {
-      method: "get",
-      params: { user_id: user_id }
-    }).then(response => {
-      this.setState({
-        events: this.state.events.concat(response.data.events) //events[0]
-      });
-      console.log(this.state.events);
-    });
-  }
 
-  register = event_id => {
+  async componentDidMount() {
     axios.defaults.withCredentials = true;
     const user_id = getID();
-    const reg = "Registered";
-    console.log("In REGISTER EVENT CLICK");
-    console.log(event_id);
+    console.log(user_id);
 
-    const registerevent = {
-      event_id: event_id,
-      user_id: user_id,
-      Registration: reg
-    };
-    console.log(registerevent);
-    axios
-      .post("/events/eventregister", registerevent)
-      .then(res =>
-        swal({
-          title: "Congratulations!",
-          text: "You Successfully registered for the Event!",
-          icon: "success",
-          button: "OK"
-        }).then(() => {
-          window.location.reload();
-        })
-      )
-      .catch(error => console.log(error.response.data));
-  };
-
+    await axios("/events/getStudentEvents", {
+      method: "get",
+      params: { "user_id": user_id },
+      config: { headers: { "Content-Type": "application/json" } }
+    })
+      .then(response => {
+        this.setState({
+          studentevents: this.state.studentevents.concat(
+            response.data.studentevents
+          )
+        });
+        console.log(this.state.studentevents);
+      })
+    //   .catch(error => console.log(error.response.data));
+  }
+ 
   render() {
     const closeBtn = (
       <button className="close" onClick={() => this.showModal()}>
         &times;
       </button>
     );
-    let eventsList = this.state.events.map(viewevent => {
-      let str = viewevent.timestamp;
+    let eventsList = this.state.studentevents.map(viewevent => {
       let str1 = viewevent.date_of_event;
       let d = str1.substring(0, str1.indexOf("T"));
-      console.log(str);
-      let date = str.substring(0, str.indexOf("T"));
-      str = viewevent.timestamp;
-      let time = str.substring(str.indexOf("T") + 1, str.indexOf("."));
       if (
         viewevent.company_name
           .toUpperCase()
@@ -93,9 +68,10 @@ class studentviewevents extends Component {
           <div class="card w-100" id="eventscard">
             <div class="card-body">
               <div className="row">
-                <h5 class="card-title col-7" id="eventtext">
+                <h5 class="card-title col-5" id="eventtext">
                   Event name: {viewevent.event_name}{" "}
                 </h5>
+                <div className="col-4"></div>
                 <div className="col-3">
                   <button
                     type="button"
@@ -103,15 +79,6 @@ class studentviewevents extends Component {
                     onClick={this.showModal}
                   >
                     View Event Details
-                  </button>
-                </div>
-                <div className="col-2">
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    onClick={() => this.register(viewevent.event_id)}
-                  >
-                    Register
                   </button>
                   <Modal
                     isOpen={this.state.modal}
@@ -128,7 +95,7 @@ class studentviewevents extends Component {
                     <ModalBody className="modal-body">
                       <div className="form-group">
                         <h4 className="font-weight-bold">
-                          Event Name: {viewevent.event_name}
+                          Event Name: {viewevent.event_name}{" "}
                         </h4>
                       </div>
                       <div className="form-group">
@@ -160,24 +127,25 @@ class studentviewevents extends Component {
                       </Button> */}
                     </ModalFooter>
                   </Modal>
+                  {/* <vieweventModal
+                    // viewevent={viewevent}
+                    toggle={this.showModal}
+                    modal={this.state.modal}
+                  /> */}
                 </div>
               </div>
               <p class="card-text" id="eventtext">
                 Company Name: {viewevent.company_name}
               </p>
+              {/* <p class="card-text" id="eventtext">
+                location: {viewevent.location}
+              </p>
+              <p class="card-text" id="eventtext">
+                event_description: {viewevent.event_description}
+              </p> */}
               <p class="card-text" id="eventtext">
                 eligibility: {viewevent.eligibility}
               </p>
-              <div className="row">
-                <div className="col-10"></div>
-                {/* <a
-                  href="/studentviewevents"
-                  class="btn btn-primary"
-                  onClick={this.register(viewevent.event_id)}
-                >
-                  Register
-                </a> */}
-              </div>
             </div>
           </div>
         );
@@ -188,33 +156,29 @@ class studentviewevents extends Component {
       <div className="viewevent">
         <StudentNavbar />
         <div className="container">
-          <nav className="navbar navbar-light bg-light">
-            <form className="form-inline">
+          <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
               <input
-                className="form-control mr-sm-2"
+                class="form-control mr-sm-2"
                 type="search"
                 onChange={this.searchChangeHandler}
                 value={this.state.searchString}
                 placeholder="Search"
                 aria-label="Search"
               />
-              <Link
-                to="/getStudentEvents"
-                className="btn btn-outline-dark my-2 my-sm-0"
-              >
-                View Registered Events
-              </Link>
             </form>
           </nav>
           <div className="row justify-content-center align-items-center">
             <div className="col-12">
               <div className="dash-one">
                 <h4 className="font-weight-bold">Events</h4>
-                {this.state.events.length > 0 ? (
-                  <div className="col-10">{eventsList}</div>
+                {this.state.studentevents.length > 0 ? (
+                  <div className="col-10">
+                    {eventsList}
+                  </div>
                 ) : (
                   <div>
-                    <h4 style={{ margin: "3em" }}>No new events to display!</h4>
+                    <h4 style={{ margin: "3em" }}>No  events Registered to display!</h4>
                   </div>
                 )}
               </div>
@@ -226,4 +190,4 @@ class studentviewevents extends Component {
   }
 }
 
-export default studentviewevents;
+export default studentRegisteredevents;

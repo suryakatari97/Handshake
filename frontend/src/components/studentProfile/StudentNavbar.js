@@ -42,7 +42,7 @@ class StudentNavbar extends Component {
 
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link" href="profiles.html">
+                <a className="nav-link" href="/viewstudentjobs">
                   {" "}
                   Jobs
                 </a>

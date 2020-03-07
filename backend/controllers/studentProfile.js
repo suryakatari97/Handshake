@@ -288,24 +288,7 @@ var studentEducation = async studentEdu => {
   }
 };
 
-var getEvents = async (req, res, next) => {
-  let conn;
-  let msg;
-  let status = false;
-  let table = "event_post";
-  conn = await dbConnection();
-  await conn.query("START TRANSACTION");
-  //await conn.query("SELECT * FROM ??",[table],(err, rowsOfTable) => {
-    await conn.query("select e.event_id,e.date_of_event,e.time,e.event_name,e.location,e.event_description,e.eligibility,e.timestamp,c.company_name from event_post AS e,company_register AS c where e.company_id = c.company_id",[],(err, rowsOfTable) => {
-    if(err) {
-      console.log(err);
-      res.status(500).json({ responseMessage: "Database not responding" });
-    } else {
-      console.log(rowsOfTable);
-      res.status(200).json({events: rowsOfTable});
-    }
-  });
-};
+
 
 var getStudentProfiles = async (req,res,next) => {
   let conn;
@@ -383,6 +366,5 @@ module.exports = {
   getstudentExperience,
   getstudentEducation,
   updatestudentProfileImage,
-  getEvents,
   getStudentProfiles
 };
