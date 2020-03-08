@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const port = process.env.PORT || 3001;
 const cors = require("cors");
+const path = require("path");
 
 var dbConnection = require('./controllers/dbconnection')
 
@@ -12,6 +13,9 @@ const studentRouter = require('./routes/student_routes');
 const companyRouter = require('./routes/company_routes');
 const eventRouter = require('./routes/eventPosts');
 const jobRouter = require('./routes/JobPost');
+const resumeRouter = require('./routes/resume_routes');
+
+app.use("/uploads", express.static(path.join(__dirname, "/uploads/")));
 
 testDBConection = async () => {
     let con = await dbConnection();
@@ -51,6 +55,7 @@ app.use('/student', studentRouter);
 app.use('/company', companyRouter);
 app.use('/events', eventRouter);
 app.use('/jobs', jobRouter);
+app.use("/resume", resumeRouter);
 
 
 // add database to req object.

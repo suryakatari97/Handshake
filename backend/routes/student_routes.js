@@ -2,15 +2,15 @@
 const express = require("express");
 const router = express.Router();
 
+
 const student = require("../controllers/studentProfile");
 var {getStudentProfiles} = require("../controllers/studentProfile");
-
-
 
 //validations
 const validateBasicInput = require("../validation/studentbasic");
 const validateInput = require("../validation/studentExperience");
 const validateEduInput = require("../validation/studentEducation");
+
 //profilepic
 const multer = require("multer");
 const path = require("path");
@@ -50,7 +50,7 @@ let base64Image = student_profileImageName => {
 let getImageDirectory = student_profieImageName => {
   let pathName = path.join(
     __dirname,
-    "../../uploads/profilepics",
+    "./uploads/profilepics",
     student_profieImageName
   );
   return pathName;
@@ -75,9 +75,9 @@ router.post(
         //send base64 image to client
         //override message property
         console.log(__dirname);
-        let filePath = getImageDirectory(buyer_profieImageName);
+        let filePath = getImageDirectory(student_profieImageName);
         console.log(filePath);
-        responseObj.message.buyer_profileImage =
+        responseObj.message.student_profileImage =
           "data:image/png;base64," + base64Image(filePath);
       }
     } catch (err) {
