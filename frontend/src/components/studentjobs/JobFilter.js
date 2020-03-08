@@ -59,7 +59,9 @@ import { Modal, ModalHeader, ModalBody } from "reactstrap";
      });
    };
 
-   apply = job_id => {};
+   apply = job_id => {
+     
+   };
 
    render() {
        const closeBtn = (

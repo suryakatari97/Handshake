@@ -124,7 +124,7 @@ var getstudentExperience = async studentId => {
     conn = await dbConnection();
     if (conn) {
       await conn.query("START TRANSACTION");
-      var result = await conn.query("select * from ?? where student_id = ?", [
+      var experience = await conn.query("select * from ?? where student_id = ?", [
         table,
         studentId
       ]);
@@ -132,7 +132,7 @@ var getstudentExperience = async studentId => {
       status = true;
       msg = "student exp_details fetched";
       console.log(msg);
-      console.log(result);
+      console.log(experience);
     }
   } catch (e) {
     console.log(e);
@@ -144,8 +144,9 @@ var getstudentExperience = async studentId => {
       await conn.destroy();
     }
     return {
-      status: status,
-      message: msg
+      // status: status,
+      // message: msg,
+      experience:experience
     };
   }
 };
@@ -210,7 +211,7 @@ var getstudentEducation = async studentId => {
     conn = await dbConnection();
     if (conn) {
       await conn.query("START TRANSACTION");
-      var result = await conn.query("select * from ?? where student_id=?", [
+      var education = await conn.query("select * from ?? where student_id=?", [
         table,
         studentId
       ]);
@@ -218,7 +219,7 @@ var getstudentEducation = async studentId => {
       status = true;
       msg = "student edu_details fetched";
       console.log(msg);
-      console.log(result);
+      console.log(education);
     }
   } catch (e) {
     console.log(e);
@@ -230,9 +231,9 @@ var getstudentEducation = async studentId => {
       await conn.destroy();
     }
     return {
-      status: status,
-      message: msg,
-      result:result
+      // status: status,
+      // message: msg,
+      education:education
     };
   }
 };

@@ -153,7 +153,8 @@ router.post("/studentdetails", async (req, res) => {
 
 router.get("/studentExperience", async (req, res) => {
   console.log("inside student get experience");
-  let studentId = req.body.id;
+   let studentId = req.query.id;
+   //let studentId = 16;
   var resObj = {};
   try {
     resObj = await student.getstudentExperience(studentId);
@@ -209,6 +210,7 @@ router.post("/studentExperience", async (req, res) => {
 router.get("/studentEducation", async (req, res) => {
   console.log("inside student get education");
   let studentId = req.query.id;
+  // let studentId = 16;
   let resObj = {};
   try {
     resObj = await student.getstudentEducation(studentId);

@@ -93,9 +93,9 @@ export const getStudentEducation = id => dispatch => {
 export const getStudentExperience = id => dispatch => {
   dispatch(setExpProfileLoading());
   console.log("id", id);
-  axios("/getStudentExperience", {
+  axios("/student/studentExperience", {
     method: "get",
-    params: { id: id }
+    params: { "id": id }
   })
     .then(res =>
       dispatch({
