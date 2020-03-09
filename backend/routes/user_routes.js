@@ -48,7 +48,7 @@ router.post("/signUpStudent", async function(req, res) {
 });
 
 router.post("/signUpCompany", async (req, res) => {
-  let { email, password, name, location } = req.body;
+  let { email, password, company_name, location } = req.body;
   var resObj = {};
   console.log("In signup company route");
   console.log(req.body);
@@ -58,7 +58,7 @@ router.post("/signUpCompany", async (req, res) => {
     let company = {
       email: email,
       password: password,
-      company_name: name,
+      company_name: company_name,
       location: location
     };
     console.log("before calling Models(DB) signup");

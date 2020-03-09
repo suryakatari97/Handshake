@@ -5,7 +5,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
         <div className="container">
-          <a className="navbar-brand" href="landing.html">
+          <a className="navbar-brand" href="/">
             HandShake
           </a>
           <button
@@ -20,7 +20,7 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link" href="profiles.html">
+                <a className="nav-link" href="/">
                   {" "}
                   Student
                 </a>
@@ -29,7 +29,7 @@ class Navbar extends Component {
 
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <a className="nav-link" href="profiles.html">
+                <a className="nav-link" href="/">
                   {" "}
                   Company
                 </a>
@@ -38,9 +38,25 @@ class Navbar extends Component {
 
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <a className="nav-link" href="/register">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
                   Sign Up
                 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/register">
+                    As Student
+                  </a>
+                  <a class="dropdown-item" href="/registerCompany">
+                    As Company
+                  </a>
+                </div>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/login">

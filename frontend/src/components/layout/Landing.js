@@ -17,9 +17,9 @@ class Landing extends Component {
                     The #1 way college students find jobs
                   </p>
                   <hr />
-                  <a href="/register" class="btn btn-lg btn-info mr-2">
+                  {/* <a href="/register" class="btn btn-lg btn-info mr-2">
                     Sign Up
-                  </a>
+                  </a> */}
                   <a href="/login" class="btn btn-lg btn-light">
                     Login
                   </a>

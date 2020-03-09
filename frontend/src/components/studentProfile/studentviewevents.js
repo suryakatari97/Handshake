@@ -16,6 +16,7 @@ class studentviewevents extends Component {
       searchString: "",
       displayAck: false,
       success: false,
+      viewevent:null,
       modal: false
     };
     this.searchChangeHandler = this.searchChangeHandler.bind(this);
@@ -27,6 +28,15 @@ class studentviewevents extends Component {
     console.log("hello");
     this.setState({
       modal: !this.state.modal
+      //events: this.state.events
+    });
+  };
+
+  showModal1 = (viewevent) => {
+    console.log("hello");
+    this.setState({
+      modal: !this.state.modal,
+      viewevent: viewevent
     });
   };
   async componentDidMount() {
@@ -79,7 +89,7 @@ class studentviewevents extends Component {
     let eventsList = this.state.events.map(viewevent => {
       let str = viewevent.timestamp;
       let str1 = viewevent.date_of_event;
-      let d = str1.substring(0, str1.indexOf("T"));
+      //let d = str1.substring(0, str1.indexOf("T"));
       console.log(str);
       let date = str.substring(0, str.indexOf("T"));
       str = viewevent.timestamp;
@@ -94,13 +104,13 @@ class studentviewevents extends Component {
             <div class="card-body">
               <div className="row">
                 <h5 class="card-title col-7" id="eventtext">
-                  Event name: {viewevent.event_name}{" "}
+                  Event name: {viewevent.event_name}
                 </h5>
                 <div className="col-3">
                   <button
                     type="button"
                     class="btn btn-outline-success"
-                    onClick={this.showModal}
+                    onClick={() => this.showModal1(viewevent)}
                   >
                     View Event Details
                   </button>
@@ -113,53 +123,6 @@ class studentviewevents extends Component {
                   >
                     Register
                   </button>
-                  <Modal
-                    isOpen={this.state.modal}
-                    toggle={() => this.showModal()}
-                    className="modal-popup"
-                    scrollable
-                  >
-                    <ModalHeader
-                      toggle={() => this.showModal()}
-                      close={closeBtn}
-                    >
-                      EventDetails
-                    </ModalHeader>
-                    <ModalBody className="modal-body">
-                      <div className="form-group">
-                        <h4 className="font-weight-bold">
-                          Event Name: {viewevent.event_name}
-                        </h4>
-                      </div>
-                      <div className="form-group">
-                        <h4 className="font-weight-bold">
-                          Event Description: {viewevent.event_description}
-                        </h4>
-                        <br />
-                      </div>
-                      <div className="form-group">
-                        <h4 className="font-weight-bold">
-                          Location:{viewevent.location}{" "}
-                        </h4>
-                      </div>
-                      <div className="form-group">
-                        <h4 className="font-weight-bold">DATE: {d}</h4>
-                      </div>
-                      <div className="form-group">
-                        <h4 className="font-weight-bold">
-                          TIME: {viewevent.time}
-                        </h4>
-                      </div>
-                    </ModalBody>
-                    <ModalFooter>
-                      {/* <Button
-                        color="secondary"
-                        onClick={() => this.showModal()}
-                      >
-                        Cancel
-                      </Button> */}
-                    </ModalFooter>
-                  </Modal>
                 </div>
               </div>
               <p class="card-text" id="eventtext">
@@ -211,7 +174,64 @@ class studentviewevents extends Component {
               <div className="dash-one">
                 <h4 className="font-weight-bold">Events</h4>
                 {this.state.events.length > 0 ? (
-                  <div className="col-10">{eventsList}</div>
+                  <div className="col-10">
+                    {eventsList}
+                    {this.state.viewevent != null ? (
+                        <Modal
+                      isOpen={this.state.modal}
+                      toggle={() => this.showModal()}
+                      className="modal-popup"
+                      scrollable
+                    >
+                      <ModalHeader
+                        toggle={() => this.showModal()}
+                        close={closeBtn}
+                      >
+                        EventDetails
+                      </ModalHeader>
+                      <ModalBody className="modal-body">
+                        <div className="form-group">
+                          <h4 className="font-weight-bold">
+                            Event Name: {this.state.viewevent.event_name}
+                          </h4>
+                        </div>
+                        <div className="form-group">
+                          <h4 className="font-weight-bold">
+                            Event Description:{" "}
+                            {this.state.viewevent.event_description}
+                          </h4>
+                          <br />
+                        </div>
+                        <div className="form-group">
+                          <h4 className="font-weight-bold">
+                            Location:{this.state.viewevent.location}
+                          </h4>
+                        </div>
+                        <div className="form-group">
+                          <h4 className="font-weight-bold">
+                            DATE: {this.state.viewevent.date_of_event}
+                          </h4>
+                        </div>
+                        <div className="form-group">
+                          <h4 className="font-weight-bold">
+                            TIME: {(this.state.viewevent.time)}
+                          </h4>
+                        </div>
+                      </ModalBody>
+                      <ModalFooter>
+                        {/* <Button
+                        color="secondary"
+                        onClick={() => this.showModal()}
+                      >
+                        Cancel
+                      </Button> */}
+                      </ModalFooter>
+                    </Modal> 
+                    ) : (
+                      null
+                    )}
+                    
+                  </div>
                 ) : (
                   <div>
                     <h4 style={{ margin: "3em" }}>No new events to display!</h4>

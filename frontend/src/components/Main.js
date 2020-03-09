@@ -14,14 +14,22 @@ import viewevents from './studentProfile/studentviewevents';
 import viewStudentProfiles from './studentProfile/viewStudentProfiles';
 import studentRegisteredevents from './studentProfile/studentRegisteredevents';
 import viewstudentjobs from './studentjobs/Jobs';
+import CompanyHome from './company/CompanyHome';
+import RegisterCompany from './auth/RegisterCompany';
+import companyProfile from './company/CompanyProfile';
+import JobPost from "./company/JobPost";
 
  class Main extends Component {
     render() {
         return (
           <div>
             <Route exact path="/" component={Landing} />
+            <Route exact path="/jobPost" component={JobPost} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
+            <Route exact path="/registerCompany" component={RegisterCompany} />
+            <Route path="/companyProfile" component={companyProfile} />
+            <Route path="/companyHome" component={CompanyHome} />
             <Route exact path="/studentviewevents" component={viewevents} />
             <Route exact path="/viewstudentjobs" component={viewstudentjobs} />
             <Route
@@ -39,7 +47,7 @@ import viewstudentjobs from './studentjobs/Jobs';
               path="/studentDashboard"
               component={studentDashboard}
             />
-            <Route exact path="/companyeventpost" component={eventPost} />
+            <Route exact path="/eventPost" component={eventPost} />
 
             <Route exact path="/studentbasic" component={studentbasic} />
             <Route

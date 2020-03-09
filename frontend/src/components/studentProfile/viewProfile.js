@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import StudentNavbar from "./StudentNavbar";
 import StudentEducation from "./viewStudentEducation";
 import StudentExperience from "./viewStudentExperience";
+import StudentBasic from "./viewstudentbasic";
 
 class viewProfile extends Component {
   componentDidMount() {
@@ -29,6 +30,11 @@ class viewProfile extends Component {
     const { profile = [], loading } = this.props.profile;
     const { education = [], eduLoading } = this.props.education;
     const { experience = [], expLoading } = this.props.experience;
+    
+    console.log("profile :");
+    console.log(profile);
+    
+    
 
     let viewProfileContent;
 
@@ -68,13 +74,14 @@ class viewProfile extends Component {
             <div className="col-3">
               <h1 className="">Profile</h1>
               {viewProfileContent}
+              {/* <StudentBasic profile={profile} /> */}
             </div>
             <div className="col-8">
               <div>
                 <StudentEducation education={education} />
                 <div id="edu"></div>
                 <StudentExperience experience={experience} />
-              </div> 
+              </div>
             </div>
           </div>
         </div>

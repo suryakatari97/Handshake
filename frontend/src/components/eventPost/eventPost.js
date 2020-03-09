@@ -34,7 +34,7 @@ class eventPost extends Component {
     };
     console.log(newEventPost);
     axios
-      .post("api/eventPosts/addEventPost", newEventPost)
+      .post("/events/addEventPost", newEventPost)
       .then(res => console.log(res.data))
       .catch(err => this.setState({ errors: err.response.data }));
   }

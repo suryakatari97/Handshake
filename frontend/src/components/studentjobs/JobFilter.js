@@ -15,6 +15,7 @@ class JobFilter extends Component {
       modal: false,
       modal1: false,
       file: null,
+      job: null,
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -65,26 +66,45 @@ class JobFilter extends Component {
   //    }
 
   showModal = () => {
-    console.log("hello");
+    //console.log("hello");
     this.setState({
       modal: !this.state.modal
     });
   };
 
+  showModala = (job) => {
+    //console.log("hello");
+    this.setState({
+      modal: !this.state.modal,
+      job : job
+    });
+  };
   showModal1 = () => {
-    console.log("hello");
+    //console.log("hello");
     this.setState({
       modal1: !this.state.modal1
     });
   };
 
+  showModal11 = job => {
+    console.log("11");
+    console.log(job.job_id);
+  
+    this.setState({
+      modal1: !this.state.modal1,
+      job: job
+    });
+  };
+
   uploadFile = async job_id => {
+    console.log("In upload file...");
+    
     const student_id = getID();
-    if(this.state.file !== null) {
+    if (this.state.file !== null) {
       const formData = new FormData();
       formData.append("job_id", job_id);
       formData.append("student_id", student_id);
-      formData.append("file", this.state.file[0]);//file[0]
+      formData.append("file", this.state.file[0]); //file[0]
       await axios("/resume/upload", {
         method: "post",
         data: formData,
@@ -114,136 +134,83 @@ class JobFilter extends Component {
 
     let jobDetails = this.state.jobs.map(job => {
       return (
-        <div class="col w-75" id="eventscard">
-          <div class="card">
-            <div class="card-body">
+        <div className="col w-75" id="eventscard">
+          <div className="card">
+            <div className="card-body">
               <div className="row">
-                <h5 class="card-title col-7">{job.job_title}</h5>
+                <h5 className="card-title col-7">{job.job_title}</h5>
                 {/* <div className="col-6"></div> */}
                 <div className="col-3">
                   <button
                     type="button"
-                    class="btn btn-outline-success"
-                    onClick={() => this.showModal()} //changed this.showmodal
+                    className="btn btn-outline-success"
+                    onClick={() => this.showModala(job)} //changed this.showmodal
                   >
                     View Job Details
                   </button>
-                  {/* MODAL CODE FOR VIEW JOB DETAILS */}
-                  <Modal
-                    isOpen={this.state.modal}
-                    toggle={() => this.showModal()}
-                    className="modal-popup"
-                    scrollable
-                  >
-                    <ModalHeader
-                      toggle={() => this.showModal()}
-                      close={closeBtn}
-                    >
-                      Job Details
-                    </ModalHeader>
-                    <ModalBody className="modal-body">
-                      <div className="form-group">
-                        <h4>Title : {job.job_title}</h4>
-                      </div>
-                      <div className="form-group">
-                        <h4>Job Description: {job.job_description}</h4>
-                      </div>
-                      <div className="form-group">
-                        <h4>Location : {job.location} </h4>
-                      </div>
-                      <div className="form-group">
-                        <h4>
-                          Application deadline :
-                          <Moment format="YYYY/MM/DD">
-                            {job.app_deadline}
-                          </Moment>
-                        </h4>
-                      </div>
-                    </ModalBody>
-                  </Modal>
-                  {/* END OF VIEW JOB DETAILS MODAL */}
                 </div>
               </div>
 
-              <p class="card-text">
+              <p className="card-text">
                 <strong>{job.company_name}</strong>,{" "}
                 <strong>{job.location}</strong>
               </p>
-              <p class="card-text">
+              <p className="card-text">
                 <strong>Salary:</strong> {job.salary}
               </p>
-              <p class="card-text">
+              <p className="card-text">
                 <strong>Posted on : </strong>
                 <Moment format="YYYY/MM/DD">{job.posting_date}</Moment>
                 <strong> Application Deadline : </strong>
                 <Moment format="YYYY/MM/DD">{job.app_deadline}</Moment>
               </p>
 
-              <p class="card-text">
+              <p className="card-text">
                 <strong>Job Details : </strong>
                 {job.job_description}
               </p>
               <div className="col-10"></div>
               {/* <a
                  href="/studentApplyJob"
-                 class="btn btn-primary"
+                 className="btn btn-primary"
                  onClick={this.apply(job.job_id)}
                >
                  Apply
                </a> */}
               <button
                 type="button"
-                class="btn btn-primary"
-                onClick={() => this.showModal1()} //changed this.showmodal1
+                className="btn btn-primary"
+                onClick={() => this.showModal11(job)} //changed this.showmodal1
               >
                 Apply
               </button>
-              {/* MODAL CODE  FOR RESUME UPLOADING  */}
-              <Modal
-                isOpen={this.state.modal1}
-                toggle={() => this.showModal1()}
-                className="modal-popup"
-                scrollable
-              >
-                <ModalHeader toggle={() => this.showModal1()} close={closeBtn1}>
-                  Upload
-                </ModalHeader>
-                <ModalBody className="modal-body">
-                  <div>
-                    <form
-                      onSubmit={() => this.uploadFile(job.job_id)}
-                    >
-                      <div className="form-group row">
-                        <label
-                          htmlFor="url"
-                          className="col-sm-2 col-form-label"
-                        >
-                          Upload File:
-                        </label>
-                        <div className="col-sm-5">
-                          <input
-                            label="upload file"
-                            type="file"
-                            required
-                            onChange={this.handleUpload}
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group row text-center">
-                        <div className="col-sm-5">
-                          <button
-                            type="submit"
-                            className="btn btn-primary align-center"
-                            style={{ marginTop: "2em" }}
-                          >
-                            Upload
-                          </button>
-                        </div>
-                      </div>
-                    </form>
+              {/* <form onSubmit={() => this.uploadFile(job.job_id)}>
+                <div className="form-group row">
+                  <label htmlFor="url" className="col-sm-2 col-form-label">
+                    Upload Resume:
+                  </label>
+                  <div className="col-sm-5">
+                    <input
+                      label="upload file"
+                      type="file"
+                      required
+                      onChange={this.handleUpload}
+                    />
                   </div>
-                </ModalBody>
-              </Modal>
+                </div>
+                <div className="form-group row text-center">
+                  <div className="col-sm-5">
+                    <button
+                      type="submit"
+                      className="btn btn-primary align-center"
+                      style={{ marginTop: "2em" }}
+                    >
+                      Upload
+                    </button>
+                  </div>
+                </div>
+              </form> */}
+              {/* MODAL CODE  FOR RESUME UPLOADING  */}
             </div>
           </div>
         </div>
@@ -287,6 +254,82 @@ class JobFilter extends Component {
         <div>
           <h4>Jobs</h4>
           {jobDetails}
+          {this.state.job != null ? (
+            // {/* MODAL CODE FOR VIEW JOB DETAILS */}
+            <Modal
+              isOpen={this.state.modal}
+              toggle={() => this.showModal()}
+              className="modal-popup"
+              scrollable
+            >
+              <ModalHeader toggle={() => this.showModal()} close={closeBtn}>
+                Job Details
+              </ModalHeader>
+              <ModalBody className="modal-body">
+                <div className="form-group">
+                  <h4>Title : {this.state.job.job_title}</h4>
+                </div>
+                <div className="form-group">
+                  <h4>Job Description: {this.state.job.job_description}</h4>
+                </div>
+                <div className="form-group">
+                  <h4>Location : {this.state.job.location} </h4>
+                </div>
+                <div className="form-group">
+                  <h4>
+                    Application deadline :
+                    <Moment format="YYYY/MM/DD">
+                      {this.state.job.app_deadline}
+                    </Moment>
+                  </h4>
+                </div>
+              </ModalBody>
+            </Modal>
+          ) : // {/* END OF VIEW JOB DETAILS MODAL */}
+          null}
+          {this.state.job != null ? (
+            //resume uploading
+            <Modal
+              isOpen={this.state.modal1}
+              toggle={() => this.showModal1()}
+              className="modal-popup"
+              scrollable
+            >
+              <ModalHeader toggle={() => this.showModal1()} close={closeBtn1}>
+                Upload
+              </ModalHeader>
+              <ModalBody className="modal-body">
+                <div>
+                  <form onSubmit={() => this.uploadFile(this.job.job_id)}>
+                    <div className="form-group row">
+                      <label htmlFor="url" className="col-sm-2 col-form-label">
+                        Upload File:
+                      </label>
+                      <div className="col-sm-5">
+                        <input
+                          label="upload file"
+                          type="file"
+                          required
+                          onChange={() => this.handleUpload}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row text-center">
+                      <div className="col-sm-5">
+                        <button
+                          type="submit"
+                          className="btn btn-primary align-center"
+                          style={{ marginTop: "2em" }}
+                        >
+                          Upload
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </ModalBody>
+            </Modal>
+          ) : null}
         </div>
       </div>
     );
