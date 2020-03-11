@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import TextFieldGroup from '../common/TextFieldGroup';
 import TextAreaFieldGroup from '../common/TextAreaFieldGroup';
 import {createProfile} from '../../actions/profileActions';
+import StudentNavbar from './StudentNavbar';
 
  class studentbasic extends Component {
    constructor(props) {
@@ -16,7 +17,7 @@ import {createProfile} from '../../actions/profileActions';
        city: "",
        state: "",
        country: "",
-       careerObj: "",
+       career_obj: "",
        email: "",
        phone_num: "",
        skill_set: "",
@@ -44,7 +45,7 @@ import {createProfile} from '../../actions/profileActions';
           city: this.state.city,
           state: this.state.state,
           country: this.state.country,
-          careerObj: this.state.careerObj,
+          career_obj: this.state.career_obj,
           email: this.state.email,
           phone_num: this.state.phone_num,
           skill_set: this.state.skill_set,
@@ -66,6 +67,7 @@ import {createProfile} from '../../actions/profileActions';
      
      return (
        <div className="studentbasic">
+         <StudentNavbar />
          <div className="container">
            <div className="row">
              <div className="col-md-8 m-auto">
@@ -75,10 +77,10 @@ import {createProfile} from '../../actions/profileActions';
                <form noValidate onSubmit={this.onSubmit}>
                  <TextFieldGroup
                    placeholder="firstname"
-                   name="fname"//same
-                   value={this.state.fname}//same
+                   name="fname" //same
+                   value={this.state.fname} //same
                    onChange={this.onChange}
-                   error={errors.fname}//backend fname
+                   error={errors.fname} //backend fname
                  />
 
                  <TextFieldGroup
@@ -138,11 +140,11 @@ import {createProfile} from '../../actions/profileActions';
                    error={errors.skill_set}
                  />
                  <TextAreaFieldGroup
-                   placeholder="careerObj"
-                   name="careerObj"
-                   value={this.state.careerObj}
+                   placeholder="career_obj"
+                   name="career_obj"
+                   value={this.state.career_obj}
                    onChange={this.onChange}
-                   error={errors.careerObj}
+                   error={errors.career_obj}
                  />
                  <input
                    type="submit"

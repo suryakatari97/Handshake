@@ -12,7 +12,7 @@ var addEventPost = async eventDetails => {
       await connection.query("START TRANSACTION");
       console.log("New event-post");
       console.log(eventDetails);
-      var newPost = await connection.query("INSERT INTO event_details SET ?", [
+      var newPost = await connection.query("INSERT INTO event_post SET ?", [
         eventDetails
       ]);
       await connection.query("COMMIT");
@@ -49,7 +49,7 @@ var getEventDetails = async user_id => {
       await connection.query("START TRANSACTION");
       console.log("Get event-posts");
       var events = await connection.query(
-        "SELECT * FROM event_details where company_id = " + user_id
+        "SELECT * FROM event_post where company_id = " + user_id
       );
       await connection.query("COMMIT");
       console.log(events);
@@ -74,7 +74,48 @@ var getEventDetails = async user_id => {
   }
 };
 
+var getRegisteredStudentDetails = async event_id => {
+  let conn;
+  let message = "";
+  let status = false;
+  try {
+    console.log("In get event mysql");
+    conn = await dbConnection();
+    if (conn) {
+      await conn.query("START TRANSACTION");
+      console.log("DB: Get students for a event");
+
+      var studentsForEvent = await conn.query(`SELECT student_register.student_id, student_register.first_name, 
+                student_register.last_name 
+                FROM student_register INNER JOIN events_registered
+                ON student_register.student_id = events_registered.student_id 
+                where events_registered.event_id =${event_id}`);
+
+      await conn.query("COMMIT");
+      console.log(studentsForEvent);
+      message = "Student retrieved successfully!";
+      status = true;
+      console.log(message);
+    }
+  } catch (e) {
+    console.log(e);
+    message = "Error! Please restart the system";
+    status = false;
+  } finally {
+    if (conn) {
+      await conn.release();
+      await conn.destroy();
+    }
+    return {
+      status: status,
+      message: message,
+      studentsForEvent: studentsForEvent
+    };
+  }
+};
+
 module.exports = {
   addEventPost,
-  getEventDetails
+  getEventDetails,
+  getRegisteredStudentDetails
 };

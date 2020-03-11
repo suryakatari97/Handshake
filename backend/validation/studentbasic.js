@@ -12,7 +12,7 @@ module.exports = function validateBasicInput(data) {
   data.email = !isEmpty(data.email) ? data.email : "";
   data.phone_num = !isEmpty(data.phone_num) ? data.phone_num : "";
   data.skill_set = !isEmpty(data.skill_set) ? data.skill_set : "";
-  careerObj = !isEmpty(data.careerObj) ? data.careerObj : "";
+  career_obj = !isEmpty(data.career_obj) ? data.career_obj : "";
 
   if (!Validator.isLength(data.fname, { min: 2, max: 30 })) {
     errors.fname = "Name must be between 2 and 30 characters";
@@ -58,8 +58,8 @@ module.exports = function validateBasicInput(data) {
   if (Validator.isEmpty(data.skill_set)) {
     errors.skill_set = "This field is required";
   }
-  if (Validator.isEmpty(data.careerObj)) {
-    errors.careerObj = "This field is required";
+  if (Validator.isEmpty(data.career_obj)) {
+    errors.career_obj = "This field is required";
   }
   return {
     errors,

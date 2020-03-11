@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from "axios";
 import { getID } from "../auth/HelperApis";
 import CompanyNavbar from "./CompanyNavbar";
+import swal from "sweetalert";
+import { Redirect } from "react-router";
 
  class JobPost extends Component {
    constructor() {
@@ -12,6 +14,7 @@ import CompanyNavbar from "./CompanyNavbar";
        app_deadline: "",
        salary: "",
        location: "",
+       redirect:false,
        job_description: "",
        job_category: "",
        //id: '',
@@ -43,14 +46,27 @@ import CompanyNavbar from "./CompanyNavbar";
      console.log(newJobPost);
      axios
        .post("/jobs/addJobPost", newJobPost)
-       .then(res => console.log(res.data))
+       .then(res =>
+         swal({
+           title: "Congratulations!",
+           text: "You Successfully posted job!",
+           icon: "success",
+           button: "OK"
+         }).then(() => {
+           this.setState({ redirect: true });
+         })
+       )
        .catch(err => this.setState({ errors: err.response.data }));
    }
    render() {
-
+     let redirectvar = null;
+     if (this.state.redirect === true) {
+       redirectvar = <Redirect to="/companyDashboard" />;
+     }
      return (
        <div>
          <CompanyNavbar />
+         {redirectvar}
          <div className="container">
            <div className="col-md-8 m-auto">
              <form onSubmit={this.onSubmit}>
@@ -133,7 +149,11 @@ import CompanyNavbar from "./CompanyNavbar";
 
                <br></br>
                <div class="form-group">
-                 <input type="submit" className="btn btn-primary" value="Post Job" />
+                 <input
+                   type="submit"
+                   className="btn btn-primary"
+                   value="Post Job"
+                 />
                </div>
              </form>
            </div>

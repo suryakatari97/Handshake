@@ -135,7 +135,11 @@ var signIn = async userData => {
         message = "Logged in successfully";
         console.log("DB RESULT STUDENT ID",result[0].student_id);
         
-        let userID = result[0]["student_id"];
+        let userID = 
+        userType == "student"
+        ? result[0]["student_id"]
+        : result[0]["company_id"];
+      
         let userProPic = result[0]["profile_pic"];
         let fname =
           userType == "student"

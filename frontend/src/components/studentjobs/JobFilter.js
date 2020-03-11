@@ -16,6 +16,8 @@ class JobFilter extends Component {
       modal1: false,
       file: null,
       job: null,
+      view: false,
+      apply: false,
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -40,9 +42,10 @@ class JobFilter extends Component {
   }
 
   //handle upload for resume
-  handleUpload = event => {
-    //console.log(event.target.files);
-    this.setState({ file: event.target.files });
+  handleUpload = async event => {
+    console.log(event.target.files[0]);
+   await this.setState({ file: event.target.files[0] });
+    console.log(this.state.file);
   };
 
   onChange(e) {
@@ -65,60 +68,71 @@ class JobFilter extends Component {
   //      });
   //    }
 
-  showModal = () => {
+  showModal = () => {//view
     //console.log("hello");
     this.setState({
       modal: !this.state.modal
     });
   };
 
-  showModala = (job) => {
+  showModala = job => {//view job
     //console.log("hello");
     this.setState({
       modal: !this.state.modal,
-      job : job
+      job: job,
+      view: true,
+      apply: false
     });
   };
-  showModal1 = () => {
+  showModal1 = () => {//apply
     //console.log("hello");
     this.setState({
       modal1: !this.state.modal1
     });
   };
 
-  showModal11 = job => {
+  showModal11 = job => {//apply
     console.log("11");
     console.log(job.job_id);
-  
+
     this.setState({
       modal1: !this.state.modal1,
-      job: job
+      job: job,
+      apply: true,
+      view: false
     });
   };
 
-  uploadFile = async job_id => {
-    console.log("In upload file...");
-    
+  uploadFile = async job_id => {//apply 
+    console.log("In upload file...", this.state.file);
+
     const student_id = getID();
     if (this.state.file !== null) {
       const formData = new FormData();
       formData.append("job_id", job_id);
       formData.append("student_id", student_id);
-      formData.append("file", this.state.file[0]); //file[0]
+      formData.append("file", this.state.file); //file[0]
       await axios("/resume/upload", {
         method: "post",
         data: formData,
         config: { headers: { "Content-Type": "multipart/form-data" } } //??
-      }).then(response =>
-        swal({
-          title: "Congratulations!",
-          text: "You Successfully successfully uploadedyour resume!",
-          icon: "success",
-          button: "OK"
-        })
-      );
-    }
-  };
+      }).then(response => {
+        if (response.data.status) {
+          setTimeout(() => {
+            swal({
+              title: "Congratulations!",
+              text: "You Successfully successfully uploaded your resume!",
+              icon: "success",
+              button: "OK"
+            });
+          }, 5000);
+        }
+      }
+         
+        // localStorage.setItem("sucess",true)
+      
+      )
+  }};
 
   render() {
     const closeBtn = (
@@ -254,7 +268,7 @@ class JobFilter extends Component {
         <div>
           <h4>Jobs</h4>
           {jobDetails}
-          {this.state.job != null ? (
+          {this.state.view != false ? (
             // {/* MODAL CODE FOR VIEW JOB DETAILS */}
             <Modal
               isOpen={this.state.modal}
@@ -287,7 +301,7 @@ class JobFilter extends Component {
             </Modal>
           ) : // {/* END OF VIEW JOB DETAILS MODAL */}
           null}
-          {this.state.job != null ? (
+          {this.state.apply != false ? (
             //resume uploading
             <Modal
               isOpen={this.state.modal1}
@@ -300,7 +314,7 @@ class JobFilter extends Component {
               </ModalHeader>
               <ModalBody className="modal-body">
                 <div>
-                  <form onSubmit={() => this.uploadFile(this.job.job_id)}>
+                  <form onSubmit={() => this.uploadFile(this.state.job.job_id)}>
                     <div className="form-group row">
                       <label htmlFor="url" className="col-sm-2 col-form-label">
                         Upload File:
@@ -310,7 +324,7 @@ class JobFilter extends Component {
                           label="upload file"
                           type="file"
                           required
-                          onChange={() => this.handleUpload}
+                          onChange={this.handleUpload}
                         />
                       </div>
                     </div>

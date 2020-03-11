@@ -135,7 +135,7 @@ router.post("/studentdetails", async (req, res) => {
     email: req.body.email,
     phone_num: req.body.phone_num,
     skill_set: req.body.skill_set,
-    career_obj: req.body.careerObj
+    career_obj: req.body.career_obj
   };
   try {
     console.log("sending data to student_details");
@@ -177,6 +177,8 @@ router.post("/studentExperience", async (req, res) => {
 
   let resObj = {};
   console.log("in student experience");
+  console.log(req.body);
+  
   if (!req.body.id || !req.body.company_name || !req.body.start_date) {
     console.log("missing primary key");
     res.status(400).json({

@@ -87,13 +87,7 @@ class studentviewevents extends Component {
       </button>
     );
     let eventsList = this.state.events.map(viewevent => {
-      let str = viewevent.timestamp;
       let str1 = viewevent.date_of_event;
-      //let d = str1.substring(0, str1.indexOf("T"));
-      console.log(str);
-      let date = str.substring(0, str.indexOf("T"));
-      str = viewevent.timestamp;
-      let time = str.substring(str.indexOf("T") + 1, str.indexOf("."));
       if (
         viewevent.company_name
           .toUpperCase()

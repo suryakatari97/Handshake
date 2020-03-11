@@ -43,7 +43,7 @@ var getstudentdetails = async studentId => {
     conn = await dbConnection();
     if (conn) {
       await conn.query("START TRANSACTION");
-      var user=true;
+      var user = true;
       if (user) {
         var result = await conn.query("select * from ?? where student_id = ?", [
           table,
@@ -124,10 +124,10 @@ var getstudentExperience = async studentId => {
     conn = await dbConnection();
     if (conn) {
       await conn.query("START TRANSACTION");
-      var experience = await conn.query("select * from ?? where student_id = ?", [
-        table,
-        studentId
-      ]);
+      var experience = await conn.query(
+        "select * from ?? where student_id = ?",
+        [table, studentId]
+      );
       await conn.query("COMMIT");
       status = true;
       msg = "student exp_details fetched";
@@ -146,7 +146,7 @@ var getstudentExperience = async studentId => {
     return {
       // status: status,
       // message: msg,
-      experience:experience
+      experience: experience
     };
   }
 };
@@ -169,15 +169,16 @@ var studentExperience = async studentExp => {
       } else {
         console.log("experience record exists ");
         await conn.query(
-          "UPDATE ?? SET  title=?, location=?,end_date=? where student_id =? AND company_name=? AND start_date = ?",
+          "UPDATE ?? SET  title=?, location=?,end_date=?,company_name=?,start_date = ?,work_desc=? where student_id =?",
           [
             table,
             studentExp.title,
             studentExp.location,
             studentExp.end_date,
-            studentExp.student_id,
             studentExp.company_name,
-            studentExp.start_date
+            studentExp.start_date,
+            studentExp.work_desc,
+            studentExp.student_id
           ]
         );
       }
@@ -233,7 +234,7 @@ var getstudentEducation = async studentId => {
     return {
       // status: status,
       // message: msg,
-      education:education
+      education: education
     };
   }
 };
@@ -255,16 +256,16 @@ var studentEducation = async studentEdu => {
       } else {
         console.log("Education Record exists ");
         await conn.query(
-          "UPDATE ?? SET college_name=?, location=?, year_passing=?, cgpa=? where student_id = ? AND degree = ? AND major =?",
+          "UPDATE ?? SET college_name=?, location=?, year_passing=?,degree = ?,major =?, cgpa=? where student_id = ?",
           [
             table,
             studentEdu.college_name,
             studentEdu.location,
             studentEdu.year_passing,
-            studentEdu.cgpa,
-            studentEdu.student_id,
             studentEdu.degree,
-            studentEdu.major
+            studentEdu.major,
+            studentEdu.cgpa,
+            studentEdu.student_id
           ]
         );
       }
@@ -289,24 +290,26 @@ var studentEducation = async studentEdu => {
   }
 };
 
-
-
-var getStudentProfiles = async (req,res,next) => {
+var getStudentProfiles = async (req, res, next) => {
   let conn;
   let msg;
   let status = false;
   conn = await dbConnection();
   await conn.query("START TRANSACTION");
-  await conn.query("select c.first_name,c.last_name,e.college_name,e.major from student_education AS e,student_details AS c where e.student_id = c.student_id",[],(err, rowsOfTable) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({ responseMessage: "Database not responding" });
-    } else {
-      console.log(rowsOfTable);
-      res.status(200).json({ profiles: rowsOfTable });
+  await conn.query(
+    "select c.first_name,c.last_name,e.college_name,e.major from student_education AS e,student_details AS c where e.student_id = c.student_id",
+    [],
+    (err, rowsOfTable) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ responseMessage: "Database not responding" });
+      } else {
+        console.log(rowsOfTable);
+        res.status(200).json({ profiles: rowsOfTable });
+      }
     }
-  })
-}
+  );
+};
 
 let profileExists = async (id, table, conn) => {
   console.log(`Id is ${id} searching in table: ${table}`);
@@ -326,15 +329,10 @@ let profileExists = async (id, table, conn) => {
 
 let expprofileexists = async (table, studentExp, conn) => {
   if (conn) {
-    let result = await conn.query(
-      "select * from ?? where student_id = ? AND company_name =? AND start_date =?",
-      [
-        table,
-        studentExp.student_id,
-        studentExp.company_name,
-        studentExp.start_date
-      ]
-    );
+    let result = await conn.query("select * from ?? where student_id = ?", [
+      table,
+      studentExp.student_id
+    ]);
     console.log(result.length);
     if (result.length > 0) {
       return true;
@@ -346,10 +344,10 @@ let expprofileexists = async (table, studentExp, conn) => {
 
 let eduprofileexists = async (table, studentEdu, conn) => {
   if (conn) {
-    let result = await conn.query(
-      "Select * from ?? where student_id = ? AND degree = ? AND major = ?",
-      [table, studentEdu.student_id, studentEdu.degree, studentEdu.major]
-    );
+    let result = await conn.query("Select * from ?? where student_id = ?", [
+      table,
+      studentEdu.student_id
+    ]);
     console.log("Here");
     console.log(result.length);
     if (result.length > 0) {

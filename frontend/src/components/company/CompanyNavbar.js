@@ -15,7 +15,7 @@ import {logoutUser} from "../../actions/authActions";
      return (
        <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
          <div className="container">
-           <a className="navbar-brand" href="landing.html">
+           <a className="navbar-brand" href="/companyDashboard">
              Company Dashboard
            </a>
            <button
@@ -30,7 +30,7 @@ import {logoutUser} from "../../actions/authActions";
            <div className="collapse navbar-collapse" id="mobile-nav">
              <ul className="navbar-nav">
                <li className="nav-item">
-                 <a className="nav-link" href="/studentProfile">
+                 <a className="nav-link" href="/companyProfile">
                    {" "}
                    Profile
                  </a>
@@ -39,7 +39,7 @@ import {logoutUser} from "../../actions/authActions";
 
              <ul className="navbar-nav">
                <li className="nav-item">
-                 <a className="nav-link" href="/jobPost">
+                 <a className="nav-link" href="/companyjobPost">
                    {" "}
                    Jobs
                  </a>
@@ -48,7 +48,7 @@ import {logoutUser} from "../../actions/authActions";
 
              <ul className="navbar-nav">
                <li className="nav-item">
-                 <a className="nav-link" href="/eventPost">
+                 <a className="nav-link" href="/companyeventPost">
                    {" "}
                    Events
                  </a>

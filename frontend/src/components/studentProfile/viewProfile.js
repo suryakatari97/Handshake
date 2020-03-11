@@ -6,7 +6,6 @@ import {
   getStudentEducation,
   getStudentExperience
 } from "../../actions/profileActions";
-import Spinner from "../common/Spinner";
 import { Link } from "react-router-dom";
 import StudentNavbar from "./StudentNavbar";
 import StudentEducation from "./viewStudentEducation";
@@ -14,12 +13,17 @@ import StudentExperience from "./viewStudentExperience";
 import StudentBasic from "./viewstudentbasic";
 
 class viewProfile extends Component {
-  componentDidMount() {
-    if (this.props.auth) {
+  async componentDidMount() {
+    var student_id = null;
+    if (this.props.location.state) {
+      student_id = this.props.location.state.student_id;
+    }
+    else if(this.props.auth){
+      student_id = this.props.auth.user.id;
+    } 
       this.props.getCurrentProfile(this.props.auth.user.id);
       this.props.getStudentEducation(this.props.auth.user.id);
       this.props.getStudentExperience(this.props.auth.user.id);
-    }
   }
 
 
@@ -32,11 +36,9 @@ class viewProfile extends Component {
     const { experience = [], expLoading } = this.props.experience;
     
     console.log("profile :");
-    console.log(profile);
-    
-    
-
+    console.log(education);
     let viewProfileContent;
+    //let a = profile.result[0].carrer_obj;
 
     if (
       profile == null ||
@@ -57,11 +59,28 @@ class viewProfile extends Component {
       //user is logged in but has no profile
       viewProfileContent = (
         <div>
-          <p className="lead text-muted">Welcome {user.first_name}</p>
+          <p className="lead text-muted">
+            Welcome {profile.result[0].first_name}
+          </p>
+          <div className="card w-70">
+            <div className="card-body">
+              <img
+                src="https://static.change.org/profile-img/default-user-profile.svg"
+                class="rounded mx-auto d-block"
+                alt="..."
+                id="image"
+              ></img>
 
-          <Link to="/editstudentbasic" className="btn btn-primary">
-            Edit Profile
-          </Link>
+              <p className="lead text-muted">{profile.result[0].first_name}</p>
+              <p className="lead text-muted">
+                {education.education[0].college_name}
+              </p>
+              <p className="lead text-muted">{profile.result[0].skill_set}</p>
+              <Link to="/editstudentbasic" className="btn btn-primary">
+                Edit Profile
+              </Link>
+            </div>
+          </div>
         </div>
       );
     }
@@ -77,6 +96,17 @@ class viewProfile extends Component {
               {/* <StudentBasic profile={profile} /> */}
             </div>
             <div className="col-8">
+              <div className="card w-100" id="eventscard">
+                <div className="card-body">
+                  <h5 className="card-title" id="eventtext">
+                    Carrer Objective
+                  </h5>
+                  <br/>
+                  <h6 className="card-title" id="eventtext">
+                    Searching for co-op opportunity for either Spring or fall of 2020
+                  </h6>
+                </div>
+              </div>
               <div>
                 <StudentEducation education={education} />
                 <div id="edu"></div>

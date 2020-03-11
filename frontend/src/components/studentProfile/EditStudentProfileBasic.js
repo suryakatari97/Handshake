@@ -18,7 +18,7 @@ class EditStudentProfileBasic extends Component {
       city: "",
       state: "",
       country: "",
-      career_Obj: "",
+      career_obj: "",
       email: "",
       phone_num: "",
       skill_set: "",
@@ -56,8 +56,8 @@ class EditStudentProfileBasic extends Component {
       profile.skill_set = !isFieldEmpty(profile.skill_set)
         ? profile.skill_set
         : "";
-      profile.career_Obj = !isFieldEmpty(profile.career_Obj)
-        ? profile.career_Obj
+      profile.career_obj = !isFieldEmpty(profile.career_obj)
+        ? profile.career_obj
         : "";
 
       this.setState({
@@ -88,7 +88,7 @@ class EditStudentProfileBasic extends Component {
       city: this.state.city,
       state: this.state.state,
       country: this.state.country,
-      careerObj: this.state.careerObj,
+      career_obj: this.state.career_obj,
       email: this.state.email,
       phone_num: this.state.phone_num,
       skill_set: this.state.skill_set,
@@ -179,10 +179,10 @@ class EditStudentProfileBasic extends Component {
                 />
                 <TextAreaFieldGroup
                   placeholder="careerObj"
-                  name="careerObj"
-                  value={this.state.careerObj}
+                  name="career_obj"
+                  value={this.state.career_obj}
                   onChange={this.onChange}
-                  error={errors.careerObj}
+                  error={errors.career_obj}
                 />
                 <input
                   type="submit"

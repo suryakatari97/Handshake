@@ -135,3 +135,36 @@ export const clearProfile = () => {
         type: CLEAR_CURRENT_PROFILE
     }
 }
+
+export const createCompanyProfile = (profileData, history) => dispatch => {
+  axios
+    .post("/company/updateCompanyProfile", profileData)
+    .then(res => history.push("/companyProfile"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const getCurrentCompanyProfile = id => dispatch => {
+  dispatch(setProfileLoading());
+  console.log("id", id);
+  axios("/company/getCompanyProfile", {
+    method: "get",
+    params: { "id": id }
+  })
+    .then(res =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_PROFILE,
+        payload: {}
+      })
+    );
+};

@@ -13,7 +13,7 @@ var addJobPost = async jobDetails => {
       await conn.query("START TRANSACTION");
       console.log("Get Company Name");
       let comp = await conn.query(`Select company_name from company_register
-            where id=${jobDetails.company_id}`);
+            where company_id=${jobDetails.company_id}`);
       //console.log(comp[0].company_name);
       jobDetails.company_name = comp[0].company_name;
       console.log(jobDetails);
@@ -43,6 +43,48 @@ var addJobPost = async jobDetails => {
     };
   }
 };
+
+var getAppliedStudentDetails = async(job_id) => {
+
+  let conn;
+  let message = "";
+  let status = false;
+  try {
+    console.log("DB: getListOfStudentAppliedForJob");
+    conn = await dbConnection();
+    if (conn) {
+      await conn.query("START TRANSACTION");
+      console.log("Get students list for a job");
+
+      var studentsForJob = await conn.query(`SELECT s.student_id as student_id, s.first_name,
+                 s.last_name, a.app_status 
+                 FROM student_register AS s INNER JOIN applied_jobs AS a
+                 ON s.student_id = a.student_id 
+                 where a.job_id =${job_id}`);
+      await conn.query("COMMIT");
+      console.log(studentsForJob);
+      message = "Student retrieved successfully!";
+      status = true;
+      console.log(message);
+    }
+  } catch (e) {
+    console.log(e);
+    message = "Error! Please restart the system";
+    status = false;
+  } finally {
+    if (conn) {
+      await conn.release();
+      await conn.destroy();
+    }
+    return {
+      status: status,
+      message: message,
+      studentsForJob: studentsForJob
+    };
+  }
+
+
+}
 
 var getJobDetailsCompany = async user_id => {
   let connection;
@@ -117,6 +159,43 @@ var getJobDetails = async () => {
     };
   }
 };
+
+//companyviews
+var getCompanyJobDetails = async(company_id) => {
+  let conn;
+  // let insertId = -1;
+  let message = "";
+  let status = false;
+  try {
+    console.log("In get job model function");
+    conn = await dbConnection();
+    if (conn) {
+      await conn.query("START TRANSACTION");
+      console.log("Get job-posts");
+      var jobs = await conn.query("SELECT * FROM job_post where company_id = ?",[company_id]);
+      await conn.query("COMMIT");
+      console.log(jobs);
+      message = "Job retrieved successfully!";
+      status = true;
+      console.log(message);
+    }
+  } catch (e) {
+    console.log(e);
+    message = "Error! Please restart the system";
+    status = false;
+  } finally {
+    if (conn) {
+      await conn.release();
+      await conn.destroy();
+    }
+    return {
+      status: status,
+      message: message,
+      jobs: jobs
+    };
+  }
+
+}
 
 var getSearchedJobDetails = async (keyword, location) => {
   let conn;
@@ -239,5 +318,7 @@ module.exports = {
   getJobDetailsCompany,
   getStudentDetailsForJob,
   getSearchedJobDetails,
-  getAppliedJobDetails
+  getAppliedJobDetails,
+  getCompanyJobDetails,
+  getAppliedStudentDetails
 };

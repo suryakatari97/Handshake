@@ -22,7 +22,7 @@ class Login extends Component {
       if (this.props.auth.user.userType === 'student')
         this.props.history.push('/studentDashboard');
       else if (this.props.auth.user.userType === 'company')
-        this.props.history.push('/companyHome');
+        this.props.history.push('/companyDashboard');
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -30,7 +30,7 @@ class Login extends Component {
       if (nextProps.auth.user.userType === 'student')
         this.props.history.push('/studentDashboard');
       else if (nextProps.auth.user.userType === 'company')
-        this.props.history.push('/companyHome');
+        this.props.history.push('/companyDashboard');
     }
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });

@@ -30,7 +30,7 @@ export const registerCompany = (userData, history) => dispatch => {
       })
     );
 };
-            
+          
 export const loginUser = (userData, history) => dispatch => {
     axios.post('/user/signIn', userData)
         .then(res => {
@@ -54,7 +54,6 @@ export const loginUser = (userData, history) => dispatch => {
 
 export const setCurrentUser = (decoded) => {
     console.log(decoded);
-    
     return {
         type: SET_CURRENT_USER,
         payload: decoded

@@ -32,7 +32,7 @@ import { isFieldEmpty } from "../auth/HelperApis";
               <p class="card-text" id="eventtext">
                 Work Description: {experience[i].work_desc}
               </p>
-              <a href="/studentEducation" className="btn btn-primary">
+              <a href="/studentExperience" className="btn btn-primary">
                 Edit
               </a>
             </div>

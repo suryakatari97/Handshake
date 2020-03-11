@@ -24,6 +24,12 @@
   padding: 0px;
 }
 
+#image{
+  float: none;
+  margin: 0 auto;
+  width: 70%;
+  height: 70%;
+}
 #edu{
   margin-bottom: 25px;
 }

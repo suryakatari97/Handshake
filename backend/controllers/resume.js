@@ -6,7 +6,7 @@ var createNewUser = async (inputData) => {
     let con = await dbConnection();
     let msg;
     let status = false;
-    let table = "resume"
+    let table = "applied_jobs"
     try {
       if(con) {
       await con.query("START TRANSACTION");

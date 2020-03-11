@@ -19,14 +19,48 @@ router.get("/getJobDetails", async function(req, res) {
   }
 });
 
+router.get("/getAppliedStudentDetails", async function(req,res){
+var responseObj = {};
+try {
+  console.log("In router getAppliedStudentDetails");
+  console.log(req.query);
+  let job_id = req.query.job_id;
+  responseObj = await jobPost.getAppliedStudentDetails(job_id);
+  console.log(responseObj);
+} catch (e) {
+  console.log(e);
+  responseObj.status = false;
+} finally {
+  res.status(200).json({
+    ...responseObj
+  });
+}
+
+});
+router.get("/getCompanyJobDetails", async function(req, res) {
+  var responseObj = {};
+  try {
+    let company_id = 5;
+    responseObj = await jobPost.getCompanyJobDetails(company_id);
+    console.log(responseObj);
+  } catch (e) {
+    console.log(e);
+    responseObj.status = false;
+  } finally {
+    res.status(200).json({
+      ...responseObj
+    });
+  }
+});
+
 //companyaddJob
 router.post("/addJobPost", async function(req, res) {
   let {
     job_title,
     posting_date,
     app_deadline,
-    location,
     salary,
+    location,
     job_description,
     job_category,
     company_id

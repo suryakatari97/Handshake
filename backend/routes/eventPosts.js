@@ -6,6 +6,26 @@ const eventPost = require("../controllers/company/eventPosts");
 const StudentEvents = require("../controllers/events/studentEvents");
 var { getEvents } = require("../controllers/events/studentEvents");
 
+router.get("/getRegisteredStudentDetails", async function (req,res){
+  var responseObj = {};
+  try {
+    console.log("In router");
+    console.log(req.query);
+    let event_id = req.query.event_id;
+    responseObj = await eventPost.getRegisteredStudentDetails(event_id);
+    console.log(responseObj);
+  } catch (e) {
+    console.log(e);
+    responseObj.status = false;
+  } finally {
+    res.status(200).json({
+      ...responseObj
+    });
+  }
+
+
+});
+
 router.get("/getEventDetails", async function(req, res) {
   var responseObj = {};
   try {
@@ -25,11 +45,12 @@ router.get("/getEventDetails", async function(req, res) {
 router.post("/addEventPost", async function(req, res) {
   let {
     event_name,
-    location,
     date_of_event,
     event_description,
     time,
-    eligibility
+    location,
+    eligibility,
+    company_id
   } = req.body;
   var responseObj = {};
   console.log("In EventPosts route");
@@ -43,7 +64,7 @@ router.post("/addEventPost", async function(req, res) {
       location: location,
       time: time,
       eligibility: eligibility,
-      company_id: 1
+      company_id: company_id
     };
     console.log("before calling models eventPosts");
     console.log(eventDetails);
