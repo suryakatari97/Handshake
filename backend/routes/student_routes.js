@@ -2,96 +2,47 @@
 const express = require("express");
 const router = express.Router();
 
-
 const student = require("../controllers/studentProfile");
-var {getStudentProfiles} = require("../controllers/studentProfile");
+var { getStudentProfiles } = require("../controllers/studentProfile");
 
 //validations
 const validateBasicInput = require("../validation/studentbasic");
 const validateInput = require("../validation/studentExperience");
 const validateEduInput = require("../validation/studentEducation");
-
 //profilepic
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-//functions that determine where the file should be stored
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    console.log("in destination");
-    callback(null, "./uploads/profilepics");
-  },
 
-  filename: (req, file, callback) => {
-    fileExtension = file.originalname.split(".")[1];
-    console.log("fileExtension", fileExtension);
-    callback(
-      null,
-      file.originalname.split(".")[0] + "-" + Date.now() + "." + fileExtension
-    );
+//Storing documents/Images
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
   }
 });
 
-var upload = multer({ storage: storage });
+const upload = multer({ storage });
 
-var checkIfEmpty = item => {
-  if (item == null || item == "" || typeof item == "undefined") {
-    return true;
+//uplaod-file
+router.post("/upload-file", upload.array("photos", 5), (req, res) => {
+  console.log("req.body", req.body);
+  res.end();
+});
+
+//download-file
+router.get("/download-file/:user_image", (req, res) => {
+  var image = path.join(__dirname + "/../uploads", req.params.user_image);
+  console.log("image", image)
+  if (fs.existsSync(image)) {
+    res.sendFile(image);
   } else {
-    return false;
+    res.end("image not found");
   }
-};
+});
 
-let base64Image = student_profileImageName => {
-  var bitmap = fs.readFileSync(student_profileImageName);
-  return new Buffer(bitmap).toString("base64");
-};
-
-let getImageDirectory = student_profieImageName => {
-  let pathName = path.join(
-    __dirname,
-    "./uploads/profilepics",
-    student_profieImageName
-  );
-  return pathName;
-};
-
-//uploading profile image
-router.post(
-  "/studentProfileImage",
-  upload.single("selectedFile"),
-  async (req, res) => {
-    console.log("in student ");
-    let studentId = req.body.id;
-    let responseObj = {};
-
-    try {
-      let student_profieImageName = req.file.filename;
-      responseObj = await student.updatestudentProfileImage(
-        studentId,
-        student_profieImageName
-      );
-      if (responseObj.status) {
-        //send base64 image to client
-        //override message property
-        console.log(__dirname);
-        let filePath = getImageDirectory(student_profieImageName);
-        console.log(filePath);
-        responseObj.message.student_profileImage =
-          "data:image/png;base64," + base64Image(filePath);
-      }
-    } catch (err) {
-      responseObj.status = false;
-      responseObj.message =
-        "Unexpected error at server side! Please login and try again!!";
-      console.log(err);
-    } finally {
-      res.status(200).json({
-        ...responseObj
-      });
-    }
-  }
-);
 
 router.get("/studentdetails", async (req, res) => {
   console.log("inside profile get request");
@@ -109,7 +60,6 @@ router.get("/studentdetails", async (req, res) => {
     });
   }
 });
-
 
 router.post("/studentdetails", async (req, res) => {
   console.log("in post student details");
@@ -135,7 +85,8 @@ router.post("/studentdetails", async (req, res) => {
     email: req.body.email,
     phone_num: req.body.phone_num,
     skill_set: req.body.skill_set,
-    career_obj: req.body.career_obj
+    career_obj: req.body.career_obj,
+    student_profileImage: req.body.student_profileImage
   };
   try {
     console.log("sending data to student_details");
@@ -153,8 +104,8 @@ router.post("/studentdetails", async (req, res) => {
 
 router.get("/studentExperience", async (req, res) => {
   console.log("inside student get experience");
-   let studentId = req.query.id;
-   //let studentId = 16;
+  let studentId = req.query.id;
+  //let studentId = 16;
   var resObj = {};
   try {
     resObj = await student.getstudentExperience(studentId);
@@ -178,7 +129,7 @@ router.post("/studentExperience", async (req, res) => {
   let resObj = {};
   console.log("in student experience");
   console.log(req.body);
-  
+
   if (!req.body.id || !req.body.company_name || !req.body.start_date) {
     console.log("missing primary key");
     res.status(400).json({
@@ -265,8 +216,6 @@ router.post("/studentEducation", async (req, res) => {
   }
 });
 
-
 router.get("/viewStudentProfiles", getStudentProfiles);
-
 
 module.exports = router;

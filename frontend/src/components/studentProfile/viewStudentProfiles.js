@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import StudentNavbar from "./StudentNavbar";
 import axios from "axios";
 import "../../App.css";
+import { Link } from "react-router-dom";
 
  class viewStudentProfiles extends Component {
    constructor() {
@@ -34,7 +35,7 @@ import "../../App.css";
                .includes(this.state.searchString.toUpperCase()) ||
                student.college_name.toUpperCase()
                .includes(this.state.searchString.toUpperCase()) ||
-               student.major.toUpperCase()
+             student.skill_set.toUpperCase()
                .includes(this.state.searchString.toUpperCase())
            ) {
                return (
@@ -42,14 +43,20 @@ import "../../App.css";
                    <td>{student.first_name}</td>
                    <td>{student.last_name}</td>
                    <td>{student.college_name}</td>
-                   <td>{student.major}</td>
+                   <td>{student.skill_set}</td>
                    <td>
-                     <input
+                     {/* <input
                        type="button"
                        className="btn btn-primary btn-sm"
                        //onClick={}
                        value="view Profile"
-                     />
+                     /> */}
+                     <Link
+                       to="/viewOtherProfile"
+                       className="btn btn-primary btn-sm"
+                     >
+                       View Profile
+                    </Link>
                    </td>
                  </tr>
                );
@@ -69,13 +76,7 @@ import "../../App.css";
                  placeholder="Search"
                  aria-label="Search"
                />
-               {/* <button
-                 id="viewevents"
-                 className="btn btn-outline-success my-2 my-sm-0"
-                 type="submit"
-               >
-                 Search
-               </button> */}
+               
              </form>
            </nav>
            <div className="row justify-content-center align-items-center">
@@ -90,7 +91,7 @@ import "../../App.css";
                            <th>First Name</th>
                            <th>Last Name</th>
                            <th>College Name</th>
-                           <th>Major</th>
+                           <th>Skill Set</th>
                          </tr>
                        </thead>
                        <tbody>{studentProfile}</tbody>

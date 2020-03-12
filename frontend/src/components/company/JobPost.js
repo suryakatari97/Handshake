@@ -69,11 +69,13 @@ import { Redirect } from "react-router";
          {redirectvar}
          <div className="container">
            <div className="col-md-8 m-auto">
+             <h1 className="display-4 text-center">Add Job Posting</h1>
              <form onSubmit={this.onSubmit}>
                <div class="form-group">
                  <p>Job Title: </p>
                  <input
                    type="text"
+                   className="form-control form-control-lg"
                    placeholder="Job Title"
                    name="job_title"
                    onChange={this.onChange}
@@ -86,6 +88,7 @@ import { Redirect } from "react-router";
                  <input
                    type="date"
                    placeholder="Posting Date"
+                   className="form-control form-control-lg"
                    name="posting_date"
                    value={this.state.posting_date}
                    onChange={this.onChange}
@@ -97,6 +100,7 @@ import { Redirect } from "react-router";
                  <input
                    type="date"
                    placeholder="Application Deadline"
+                   className="form-control form-control-lg"
                    name="app_deadline"
                    value={this.state.app_deadline}
                    onChange={this.onChange}
@@ -108,6 +112,7 @@ import { Redirect } from "react-router";
                  <input
                    type="text"
                    placeholder="Salary"
+                   className="form-control form-control-lg"
                    name="salary"
                    value={this.state.salary}
                    onChange={this.onChange}
@@ -119,6 +124,7 @@ import { Redirect } from "react-router";
                  <input
                    type="text"
                    placeholder="Location"
+                   className="form-control form-control-lg"
                    name="location"
                    value={this.state.location}
                    onChange={this.onChange}
@@ -130,6 +136,7 @@ import { Redirect } from "react-router";
                  <input
                    type="text"
                    placeholder="Description"
+                   className="form-control form-control-lg"
                    name="job_description"
                    value={this.state.job_description}
                    onChange={this.onChange}
@@ -141,6 +148,7 @@ import { Redirect } from "react-router";
                  <input
                    type="text"
                    placeholder="Category"
+                   className="form-control form-control-lg"
                    name="job_category"
                    value={this.state.job_category}
                    onChange={this.onChange}
@@ -151,7 +159,7 @@ import { Redirect } from "react-router";
                <div class="form-group">
                  <input
                    type="submit"
-                   className="btn btn-primary"
+                   className="btn btn-info btn-block mt-4"
                    value="Post Job"
                  />
                </div>

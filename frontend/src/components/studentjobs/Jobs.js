@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import StudentNavbar from "../studentProfile/StudentNavbar";
-import navbar from "./navbar";
+import Nav from "../studentProfile/Nav"
 import JobFilter from './JobFilter';
 
 export default class Jobs extends Component {
@@ -9,7 +9,7 @@ export default class Jobs extends Component {
     return (
       <div>
         <StudentNavbar />
-        <navbar links={home}/>
+        <Nav links={home}/>
         <JobFilter/>
       </div>
     );

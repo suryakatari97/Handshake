@@ -4,6 +4,7 @@ import Moment from "react-moment";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
 import { getID } from "../auth/HelperApis";
 import swal from "sweetalert";
+import Nav from "../studentProfile/Nav";
 
 class JobFilter extends Component {
   constructor() {
@@ -21,7 +22,7 @@ class JobFilter extends Component {
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
-    //this.onSubmit = this.onSubmit.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -52,21 +53,21 @@ class JobFilter extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  //    async onSubmit(e) {
-  //      e.preventDefault();
-  //      const jobSearch = {
-  //        keyword: this.state.keyword,
-  //        location: this.state.location
-  //      };
-  //      console.log(jobSearch);
+     async onSubmit(e) {
+       e.preventDefault();
+       const jobSearch = {
+         keyword: this.state.keyword,
+         location: this.state.location
+       };
+       console.log(jobSearch);
 
-  //      //List of all filtered posted
-  //      await axios.post("/getSearchedJobDetails", jobSearch).then(res => {
-  //        const { jobs } = res.data;
-  //        this.setState({ jobs: jobs });
-  //        console.log(jobs);
-  //      });
-  //    }
+       //List of all filtered posted
+       await axios.post("/jobs/getSearchedJobDetails", jobSearch).then(res => {
+         const { jobs } = res.data;
+         this.setState({ jobs: jobs });
+         console.log(jobs);
+       });
+     }
 
   showModal = () => {//view
     //console.log("hello");
@@ -128,9 +129,6 @@ class JobFilter extends Component {
           }, 5000);
         }
       }
-         
-        // localStorage.setItem("sucess",true)
-      
       )
   }};
 

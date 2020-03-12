@@ -11,20 +11,19 @@ import StudentNavbar from "./StudentNavbar";
 import StudentEducation from "./viewStudentEducation";
 import StudentExperience from "./viewStudentExperience";
 import StudentBasic from "./viewstudentbasic";
+import rootURL from "../../config/settings"
+
 
 class viewProfile extends Component {
   async componentDidMount() {
-    var student_id = null;
-    if (this.props.location.state) {
-      student_id = this.props.location.state.student_id;
-    }
-    else if(this.props.auth){
-      student_id = this.props.auth.user.id;
-    } 
+    
+    if (this.props.auth) {
       this.props.getCurrentProfile(this.props.auth.user.id);
       this.props.getStudentEducation(this.props.auth.user.id);
       this.props.getStudentExperience(this.props.auth.user.id);
+    }
   }
+
 
 
   render() {
@@ -34,9 +33,9 @@ class viewProfile extends Component {
     const { profile = [], loading } = this.props.profile;
     const { education = [], eduLoading } = this.props.education;
     const { experience = [], expLoading } = this.props.experience;
-    
+
     console.log("profile :");
-    console.log(education);
+    console.log(profile);
     let viewProfileContent;
     //let a = profile.result[0].carrer_obj;
 
@@ -56,6 +55,26 @@ class viewProfile extends Component {
       );
     } // check if logged in user has profile data
     else {
+      let profileImageData = (
+        <img
+          src="https://static.change.org/profile-img/default-user-profile.svg"
+          class="rounded mx-auto d-block"
+          alt="..."
+          id="image"
+        ></img>
+      );
+      if (profile.result[0].student_profileImage) {
+        console.log("hi");
+        profileImageData = (
+          <img
+            src={rootURL + "/student/download-file/" + profile.result[0].student_profileImage}
+            class="rounded mx-auto d-block"
+            alt="..."
+            id="image"
+          ></img>
+        );
+      }
+
       //user is logged in but has no profile
       viewProfileContent = (
         <div>
@@ -64,13 +83,7 @@ class viewProfile extends Component {
           </p>
           <div className="card w-70">
             <div className="card-body">
-              <img
-                src="https://static.change.org/profile-img/default-user-profile.svg"
-                class="rounded mx-auto d-block"
-                alt="..."
-                id="image"
-              ></img>
-
+              {profileImageData}
               <p className="lead text-muted">{profile.result[0].first_name}</p>
               <p className="lead text-muted">
                 {education.education[0].college_name}
@@ -101,9 +114,10 @@ class viewProfile extends Component {
                   <h5 className="card-title" id="eventtext">
                     Carrer Objective
                   </h5>
-                  <br/>
+                  <br />
                   <h6 className="card-title" id="eventtext">
-                    Searching for co-op opportunity for either Spring or fall of 2020
+                    Searching for co-op opportunity for either Spring or fall of
+                    2020
                   </h6>
                 </div>
               </div>

@@ -7,6 +7,8 @@ import TextAreaFieldGroup from "../common/TextAreaFieldGroup";
 import { createProfile, getCurrentProfile } from "../../actions/profileActions";
 import { isFieldEmpty } from "../auth/HelperApis";
 import StudentNavbar from "./StudentNavbar";
+import rootURL from "../../config/settings";
+import axios from "axios";
 
 class EditStudentProfileBasic extends Component {
   constructor(props) {
@@ -22,6 +24,8 @@ class EditStudentProfileBasic extends Component {
       email: "",
       phone_num: "",
       skill_set: "",
+      profileImage: "",
+      profileImagePreview: undefined,
       errors: {}
     };
 
@@ -30,21 +34,34 @@ class EditStudentProfileBasic extends Component {
   }
 
   componentDidMount() {
-      console.log("in edit component : ", this.props.auth.user.id);
-      
+    console.log("in edit component : ", this.props.auth.user.id);
+
     this.props.getCurrentProfile(this.props.auth.user.id);
+
+    // console.log("got profile", this.props.profile);
+    // console.log("Profile image name", this.props.profile.student_profileImage);
+    // this.setState({
+    //   profileImagePreview:
+    //     rootURL +
+    //     "/student/download-file/" +
+    //     this.props.profile.student_profileImage
+    // });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
     if (nextProps.profile.profile) {
-        console.log(nextProps.profile.profile.result[0]);
+      console.log(nextProps.profile.profile.result[0]);
 
       const profile = nextProps.profile.profile.result[0];
       console.log("componentreceiveprops :", profile);
-      profile.first_name = !isFieldEmpty(profile.first_name) ? profile.first_name : "";
-      profile.last_name = !isFieldEmpty(profile.last_name) ? profile.last_name : "";
+      profile.first_name = !isFieldEmpty(profile.first_name)
+        ? profile.first_name
+        : "";
+      profile.last_name = !isFieldEmpty(profile.last_name)
+        ? profile.last_name
+        : "";
       profile.dob = !isFieldEmpty(profile.dob) ? profile.dob : "";
       profile.city = !isFieldEmpty(profile.city) ? profile.city : "";
       profile.state = !isFieldEmpty(profile.state) ? profile.state : "";
@@ -60,6 +77,8 @@ class EditStudentProfileBasic extends Component {
         ? profile.career_obj
         : "";
 
+      this.setState({});
+
       this.setState({
         handle: profile.handle,
         fname: profile.first_name,
@@ -71,10 +90,41 @@ class EditStudentProfileBasic extends Component {
         email: profile.email,
         phone_num: profile.phone_num,
         skill_set: profile.skill_set,
-        career_obj: profile.career_obj
+        career_obj: profile.career_obj,
       });
+      if (profile.student_profileImage) {
+        this.setState({
+          profileImagePreview:
+            rootURL + "/student/download-file/" + profile.student_profileImage
+        }
+        )
+      }
     }
   }
+
+  //handle change of profile image
+  handleChange = e => {
+    const target = e.target;
+    const name = target.name;
+
+    if (name === "ProfileImage") {
+      console.log(target.files);
+      var profilePhoto = target.files[0];
+      var data = new FormData();
+      data.append("photos", profilePhoto);
+      axios.defaults.withCredentials = true;
+      axios.post("/student/upload-file", data).then(response => {
+        if (response.status === 200) {
+          console.log("Profile Photo Name: ", profilePhoto.name);
+          this.setState({
+            profileImage: profilePhoto.name,
+            profileImagePreview:
+              rootURL + "/student/download-file/" + profilePhoto.name
+          });
+        }
+      });
+    }
+  };
 
   onSubmit(e) {
     e.preventDefault();
@@ -92,7 +142,8 @@ class EditStudentProfileBasic extends Component {
       email: this.state.email,
       phone_num: this.state.phone_num,
       skill_set: this.state.skill_set,
-      student_id: id
+      student_id: id,
+      student_profileImage: this.state.profileImage
     };
     //we call redux action using props
     this.props.createProfile(basicData, this.props.history);
@@ -103,8 +154,28 @@ class EditStudentProfileBasic extends Component {
     });
   }
   render() {
+    console.log("profile image", this.state.profileImagePreview);
     const { errors } = this.state;
     console.log(errors);
+    let profileImageData = (
+      <img
+        src="https://static.change.org/profile-img/default-user-profile.svg"
+        class="rounded mx-auto d-block"
+        alt="..."
+        id="image"
+      ></img>
+    );
+    if (this.state.profileImagePreview) {
+      console.log("hi");
+      profileImageData = (
+        <img
+          src={this.state.profileImagePreview}
+          class="rounded mx-auto d-block"
+          alt="..."
+          id="image"
+        ></img>
+      );
+    }
     return (
       <div className="studentbasic">
         <StudentNavbar />
@@ -184,6 +255,20 @@ class EditStudentProfileBasic extends Component {
                   onChange={this.onChange}
                   error={errors.career_obj}
                 />
+                <div className="form-group">
+                  <label htmlFor="ProfileImage">
+                    <strong>Profile Image : </strong>
+                  </label>
+                  <br />
+                  <input
+                    type="file"
+                    name="ProfileImage"
+                    id="ProfileImage"
+                    className="btn btn-sm photo-upload-btn"
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div id="profileImage">{profileImageData}</div>
                 <input
                   type="submit"
                   value="submit"

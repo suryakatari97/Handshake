@@ -30,11 +30,68 @@
   width: 70%;
   height: 70%;
 }
+#profileImage{
+  float: none;
+  margin: 0 auto;
+  width: 70%;
+  height: 70%;
+}
+
+#studentAppliedJob{
+  position: relative;
+  background: url("./images/tesla2.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+
+}
+#ApplicationFilter{
+  position: relative;
+  background: url("./images/job.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+
+}
+#companyprofile{
+  position: relative;
+  background: url("./images/tesla6.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+
+}
+#events{
+   position: relative;
+  background: url("./images/events.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+
+}
+#CompanyDashboard{
+  position: relative;
+  background: url("./images/tesla.jpg") no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin-top: -24px;
+  margin-bottom: -50px;
+
+}
 #edu{
   margin-bottom: 25px;
 }
 #eventscard{
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 #viewevents {

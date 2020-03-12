@@ -297,7 +297,7 @@ var getStudentProfiles = async (req, res, next) => {
   conn = await dbConnection();
   await conn.query("START TRANSACTION");
   await conn.query(
-    "select c.first_name,c.last_name,e.college_name,e.major from student_education AS e,student_details AS c where e.student_id = c.student_id",
+    "select c.first_name,c.last_name,e.college_name,e.major,c.skill_set from student_education AS e,student_details AS c where e.student_id = c.student_id",
     [],
     (err, rowsOfTable) => {
       if (err) {

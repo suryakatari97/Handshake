@@ -25,7 +25,7 @@ import { connect } from "react-redux";
       // companyjobs = Object.values(companyjobs);
        let jobDetails = companyjobs.jobs.map(job => (
          <div>
-           <div class="card w-50" id="jobscard">
+           <div class="card w-50" id="eventscard">
              <div class="card-body">
                <div className="row">Job Title: {job.job_title}</div>
                <div className="row">Posting Date: {job.posting_date}</div>
@@ -37,9 +37,13 @@ import { connect } from "react-redux";
                <div className="row">Job Decsription: {job.job_description}</div>
                <div className="row">Job Category: {job.job_category}</div>
                <div className="row">
-                 <a href="#" onClick={() => this.jobClick(job.job_id)}>
-                   Student List
-                 </a>
+                 <button
+                   type="button"
+                   class="btn btn-outline-dark"
+                   onClick={() => this.jobClick(job.job_id)}
+                 >
+                   Applied Students
+                 </button>
                </div>
              </div>
            </div>

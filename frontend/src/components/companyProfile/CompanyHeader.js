@@ -10,7 +10,7 @@ class CompanyHeader extends Component {
     return (
       <div className="row">
         <div className="col-md-12">
-          <div className="card card-body bg-info text-black mb-2">
+          <div className="card card-body  text-black mb-2">
             <div className="row">
               <div className="col-4 col-md-3 m-auto">
                 <img
@@ -29,6 +29,11 @@ class CompanyHeader extends Component {
                 {isFieldEmpty(companyDetails[0].location) ? null : (
                   <span>at {companyDetails[0].location}</span>
                 )}
+              </p>
+              <p>
+                Tesla, Inc. engages in the design, development, manufacture, and sale of fully electric vehicles,
+                 energy generation and storage systems.
+                 It also provides vehicle service centers, supercharger station, and self-driving capability.
               </p>
             </div>
           </div>

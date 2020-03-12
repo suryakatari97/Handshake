@@ -153,8 +153,10 @@ class studentRegisteredevents extends Component {
     });
 
     return (
+      
       <div className="viewevent">
         <StudentNavbar />
+        <div id="events">
         <div className="container">
           <nav class="navbar navbar-light bg-light">
             <form class="form-inline">
@@ -185,6 +187,7 @@ class studentRegisteredevents extends Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

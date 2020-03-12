@@ -57,7 +57,7 @@ class StudentsRegisteredEvent extends Component {
         <tr>
           <td>
             {
-              <a href="#" onClick={() => this.reply_click(student.student_id)}>
+              <a href="" onClick={() => this.reply_click(student.student_id)}>
                 {" "}
                 {student.first_name} {student.last_name}
               </a>

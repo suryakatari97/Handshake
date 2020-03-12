@@ -36,9 +36,13 @@ import { getStudentsForEvent } from "../../actions/companyActions";
                  Event Description:{event.event_description}
                </div>
                <div className="row">
-                 <a href="#" onClick={() => this.eventClick(event.event_id)}>
-                   Student List
-                 </a>
+                 <button
+                   type="button"
+                   class="btn btn-outline-dark"
+                   onClick={() => this.eventClick(event.event_id)}
+                 >
+                   Registered Students
+                 </button>
                </div>
              </div>
            </div>

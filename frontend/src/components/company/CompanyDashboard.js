@@ -43,6 +43,7 @@ import CompanyAddedEvents from "./CompanyAddedEvents";
        ) {
          landingContent = (
            <div>
+             
              <div className="row">
                <div className="col-md-6"></div>
                <div className="col-md-6" />
@@ -57,12 +58,14 @@ import CompanyAddedEvents from "./CompanyAddedEvents";
      return (
        <div>
          <CompanyNavbar />
+         <div id="CompanyDashboard">
          <div className="profile">
            <div className="container">
              <div className="row">
                <div className="col-md-12">{landingContent}</div>
              </div>
            </div>
+         </div>
          </div>
        </div>
      );

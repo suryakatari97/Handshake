@@ -34,27 +34,30 @@ class CompanyProfile extends Component {
       profileContent = (
         <div>
           <div className="row">
-            <div className="navbar-nav ml-auto">
+            <div className="navbar-nav ml-auto col-6">
               <Link to="/EditCompanyProfile" className="btn btn-light">
-                <i className="fas fa-user-circle text-info mr-1" /> Edit Profile
+                 Edit Profile
               </Link>
             </div>
             <div className="col-md-6" />
           </div>
           <CompanyHeader profile={profile} />
         </div>
+        
       );
     }
 
     return (
       <div>
         <CompanyNavbar />
+        <div id="companyprofile">
         <div className="profile">
           <div className="container">
             <div className="row">
               <div className="col-md-12">{profileContent}</div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     );

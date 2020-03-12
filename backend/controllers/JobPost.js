@@ -44,6 +44,41 @@ var addJobPost = async jobDetails => {
   }
 };
 
+var updateAppliedJob = async(updateAppliedJob) => {
+  let connection;
+  let status = false;
+  let message = "";
+  try {
+    console.log("DB:In update applied Job ");
+    console.log(updateAppliedJob);
+    connection = await dbConnection();
+    if (connection) {
+      await connection.query("START TRANSACTION");
+      console.log("Update an applied job");
+      console.log(updateAppliedJob.app_status);
+      await connection.query(`UPDATE applied_jobs SET app_status='${updateAppliedJob.app_status}' 
+                                WHERE student_id=${updateAppliedJob.student_id}  
+                                AND job_id=${updateAppliedJob.job_id}`);
+      await connection.query("COMMIT");
+      status = true;
+      message = "Applied Job Updated Successfully!";
+      console.log(message);
+    }
+  } catch (e) {
+    console.log(e);
+    message = "Error! Please restart the system.";
+    status = false;
+  } finally {
+    if (connection) {
+      await connection.release();
+      await connection.destroy();
+    }
+  }
+  return {
+    status: status,
+    message: message
+  };
+};
 var getAppliedStudentDetails = async(job_id) => {
 
   let conn;
@@ -320,5 +355,6 @@ module.exports = {
   getSearchedJobDetails,
   getAppliedJobDetails,
   getCompanyJobDetails,
-  getAppliedStudentDetails
+  getAppliedStudentDetails,
+  updateAppliedJob
 };

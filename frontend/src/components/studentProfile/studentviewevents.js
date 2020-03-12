@@ -88,8 +88,9 @@ class studentviewevents extends Component {
     );
     let eventsList = this.state.events.map(viewevent => {
       let str1 = viewevent.date_of_event;
+      let d = str1.substring(0, str1.indexOf("T"));
       if (
-        viewevent.company_name
+        viewevent.event_name
           .toUpperCase()
           .includes(this.state.searchString.toUpperCase())
       ) {
@@ -127,13 +128,6 @@ class studentviewevents extends Component {
               </p>
               <div className="row">
                 <div className="col-10"></div>
-                {/* <a
-                  href="/studentviewevents"
-                  class="btn btn-primary"
-                  onClick={this.register(viewevent.event_id)}
-                >
-                  Register
-                </a> */}
               </div>
             </div>
           </div>
@@ -142,8 +136,10 @@ class studentviewevents extends Component {
     });
 
     return (
+     
       <div className="viewevent">
         <StudentNavbar />
+        <div id="events">
         <div className="container">
           <nav className="navbar navbar-light bg-light">
             <form className="form-inline">
@@ -235,6 +231,7 @@ class studentviewevents extends Component {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   }

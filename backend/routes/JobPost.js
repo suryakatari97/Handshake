@@ -3,6 +3,27 @@ const router = express.Router();
 
 const jobPost = require('../controllers/JobPost');
 
+router.post("/updateAppliedJob",async function (req, res){
+  let { student_id, app_status, job_id } = req.body;
+  console.log(req.body);
+  var responseObj = {};
+  console.log("In updateAppliedJobs route");
+  try {
+    var updateAppliedJob = {
+      student_id: student_id,
+      job_id: job_id,
+      app_status: app_status
+    };
+    console.log("Before calling models updateAppliedJobs");
+    responseObj = await jobPost.updateAppliedJob(updateAppliedJob);
+  } catch (e) {
+    console.log(e);
+    responseObj.status = false;
+  } finally {
+    res.status(200).json({ ...responseObj });
+  }
+
+});
 //studentviews
 router.get("/getJobDetails", async function(req, res) {
   var responseObj = {};
